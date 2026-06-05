@@ -10,3 +10,5 @@ python-multipart
 pydantic
 pydantic-settings
 reportlab
+
+email-validator
