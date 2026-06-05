@@ -188,28 +188,30 @@ const PatientDashboard = () => {
       <div className="absolute top-0 right-0 w-1/2 h-2/3 bg-gradient-to-bl from-blue-500/20 to-transparent rounded-bl-full pointer-events-none z-0"></div>
       <div className="absolute bottom-0 left-0 w-1/2 h-2/3 bg-gradient-to-tr from-blue-500/20 to-transparent rounded-tr-full pointer-events-none z-0"></div>
       
-      <div className="w-full md:w-64 bg-white/80 backdrop-blur-md border-r border-slate-200 h-auto md:min-h-[calc(100vh-5rem)] flex-shrink-0 p-4 space-y-2 relative z-10">
-        <h2 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4 px-3 mt-4">Patient Menu</h2>
+      <div className="w-full md:w-64 bg-white/80 backdrop-blur-md md:border-r border-b md:border-b-0 border-slate-200 h-auto md:min-h-[calc(100vh-5rem)] flex-shrink-0 p-4 md:space-y-2 relative z-20">
+        <h2 className="hidden md:block text-sm font-bold text-slate-400 uppercase tracking-wider mb-4 px-3 mt-4">Patient Menu</h2>
         
-        <button onClick={() => setActiveTab('doctors')} className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold transition-colors ${activeTab === 'doctors' ? 'bg-blue-50 text-blue-700' : 'text-slate-600 hover:bg-slate-50'}`}>
-          <Search size={20} /> Find Doctors
-        </button>
-        
-        <button onClick={() => setActiveTab('appointments')} className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold transition-colors ${activeTab === 'appointments' ? 'bg-[#FF6B00]/10 text-[#FF6B00]' : 'text-slate-600 hover:bg-slate-50'}`}>
-          <Calendar size={20} /> Appointments
-        </button>
+        <div className="flex md:flex-col overflow-x-auto gap-2 pb-2 md:pb-0 snap-x scrollbar-hide" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+          <button onClick={() => setActiveTab('doctors')} className={`flex-shrink-0 snap-start md:w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold transition-colors ${activeTab === 'doctors' ? 'bg-blue-50 text-blue-700' : 'text-slate-600 hover:bg-slate-50'}`}>
+            <Search size={20} /> <span className="whitespace-nowrap">Find Doctors</span>
+          </button>
+          
+          <button onClick={() => setActiveTab('appointments')} className={`flex-shrink-0 snap-start md:w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold transition-colors ${activeTab === 'appointments' ? 'bg-[#FF6B00]/10 text-[#FF6B00]' : 'text-slate-600 hover:bg-slate-50'}`}>
+            <Calendar size={20} /> <span className="whitespace-nowrap">Appointments</span>
+          </button>
 
-        <button onClick={() => setActiveTab('chat')} className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold transition-colors ${activeTab === 'chat' ? 'bg-indigo-50 text-indigo-600' : 'text-slate-600 hover:bg-slate-50'}`}>
-          <MessageCircle size={20} /> Doctor Chat
-        </button>
-        
-        <button onClick={() => setActiveTab('pharmacy')} className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold transition-colors ${activeTab === 'pharmacy' ? 'bg-emerald-50 text-emerald-700' : 'text-slate-600 hover:bg-slate-50'}`}>
-          <ShoppingCart size={20} /> Pharmacy
-        </button>
-        
-        <button onClick={() => setActiveTab('orders')} className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold transition-colors ${activeTab === 'orders' ? 'bg-purple-50 text-purple-700' : 'text-slate-600 hover:bg-slate-50'}`}>
-          <FileText size={20} /> My Orders
-        </button>
+          <button onClick={() => setActiveTab('chat')} className={`flex-shrink-0 snap-start md:w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold transition-colors ${activeTab === 'chat' ? 'bg-indigo-50 text-indigo-600' : 'text-slate-600 hover:bg-slate-50'}`}>
+            <MessageCircle size={20} /> <span className="whitespace-nowrap">Doctor Chat</span>
+          </button>
+          
+          <button onClick={() => setActiveTab('pharmacy')} className={`flex-shrink-0 snap-start md:w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold transition-colors ${activeTab === 'pharmacy' ? 'bg-emerald-50 text-emerald-700' : 'text-slate-600 hover:bg-slate-50'}`}>
+            <ShoppingCart size={20} /> <span className="whitespace-nowrap">Pharmacy</span>
+          </button>
+          
+          <button onClick={() => setActiveTab('orders')} className={`flex-shrink-0 snap-start md:w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold transition-colors ${activeTab === 'orders' ? 'bg-purple-50 text-purple-700' : 'text-slate-600 hover:bg-slate-50'}`}>
+            <FileText size={20} /> <span className="whitespace-nowrap">My Orders</span>
+          </button>
+        </div>
       </div>
 
       <div className="flex-grow p-6 lg:p-10 max-w-6xl w-full relative z-10">

@@ -230,28 +230,30 @@ const AdminDashboard = () => {
       <div className="absolute bottom-0 left-0 w-1/2 h-2/3 bg-gradient-to-tr from-blue-500/20 to-transparent rounded-tr-full pointer-events-none z-0"></div>
       
       {/* Sidebar Navigation */}
-      <div className="w-full md:w-64 bg-white/80 backdrop-blur-md border-r border-slate-200 h-auto md:min-h-[calc(100vh-5rem)] flex-shrink-0 p-4 space-y-2 relative z-10">
-        <h2 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4 px-3 mt-4">Admin Menu</h2>
+      <div className="w-full md:w-64 bg-white/80 backdrop-blur-md md:border-r border-b md:border-b-0 border-slate-200 h-auto md:min-h-[calc(100vh-5rem)] flex-shrink-0 p-4 md:space-y-2 relative z-20">
+        <h2 className="hidden md:block text-sm font-bold text-slate-400 uppercase tracking-wider mb-4 px-3 mt-4">Admin Menu</h2>
         
-        <button onClick={() => setActiveTab('dashboard')} className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold transition-colors ${activeTab === 'dashboard' ? 'bg-blue-50 text-blue-700' : 'text-slate-600 hover:bg-slate-50'}`}>
-          <Activity size={20} /> Overview
-        </button>
-        
-        <button onClick={() => setActiveTab('inventory')} className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold transition-colors ${activeTab === 'inventory' ? 'bg-blue-50 text-blue-700' : 'text-slate-600 hover:bg-slate-50'}`}>
-          <Package size={20} /> Inventory
-        </button>
-        
-        <button onClick={() => setActiveTab('doctors')} className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold transition-colors ${activeTab === 'doctors' ? 'bg-blue-50 text-blue-700' : 'text-slate-600 hover:bg-slate-50'}`}>
-          <Users size={20} /> Doctors
-        </button>
-        
-        <button onClick={() => setActiveTab('patients')} className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold transition-colors ${activeTab === 'patients' ? 'bg-blue-50 text-blue-700' : 'text-slate-600 hover:bg-slate-50'}`}>
-          <Users size={20} /> Patients
-        </button>
-        
-        <button onClick={() => setActiveTab('ratings')} className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold transition-colors ${activeTab === 'ratings' ? 'bg-orange-50 text-orange-700' : 'text-slate-600 hover:bg-slate-50'}`}>
-          <Activity size={20} /> Ratings
-        </button>
+        <div className="flex md:flex-col overflow-x-auto gap-2 pb-2 md:pb-0 snap-x scrollbar-hide" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+          <button onClick={() => setActiveTab('dashboard')} className={`flex-shrink-0 snap-start md:w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold transition-colors ${activeTab === 'dashboard' ? 'bg-blue-50 text-blue-700' : 'text-slate-600 hover:bg-slate-50'}`}>
+            <Activity size={20} /> <span className="whitespace-nowrap">Overview</span>
+          </button>
+          
+          <button onClick={() => setActiveTab('inventory')} className={`flex-shrink-0 snap-start md:w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold transition-colors ${activeTab === 'inventory' ? 'bg-blue-50 text-blue-700' : 'text-slate-600 hover:bg-slate-50'}`}>
+            <Package size={20} /> <span className="whitespace-nowrap">Inventory</span>
+          </button>
+          
+          <button onClick={() => setActiveTab('doctors')} className={`flex-shrink-0 snap-start md:w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold transition-colors ${activeTab === 'doctors' ? 'bg-blue-50 text-blue-700' : 'text-slate-600 hover:bg-slate-50'}`}>
+            <Users size={20} /> <span className="whitespace-nowrap">Doctors</span>
+          </button>
+          
+          <button onClick={() => setActiveTab('patients')} className={`flex-shrink-0 snap-start md:w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold transition-colors ${activeTab === 'patients' ? 'bg-blue-50 text-blue-700' : 'text-slate-600 hover:bg-slate-50'}`}>
+            <Users size={20} /> <span className="whitespace-nowrap">Patients</span>
+          </button>
+          
+          <button onClick={() => setActiveTab('ratings')} className={`flex-shrink-0 snap-start md:w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold transition-colors ${activeTab === 'ratings' ? 'bg-orange-50 text-orange-700' : 'text-slate-600 hover:bg-slate-50'}`}>
+            <Activity size={20} /> <span className="whitespace-nowrap">Ratings</span>
+          </button>
+        </div>
       </div>
 
       {/* Main Content Area */}

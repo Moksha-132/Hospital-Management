@@ -91,7 +91,7 @@ const Hero = () => {
           </div>
 
           {/* Interactive Graphic / Card */}
-          <div className="w-full lg:w-1/2 relative flex justify-center lg:justify-end min-h-[600px]">
+          <div className="w-full lg:w-1/2 relative flex justify-center lg:justify-end min-h-[400px] md:min-h-[600px]">
             <motion.div 
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
