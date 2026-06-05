@@ -46,7 +46,12 @@ const TopDoctors = () => {
             doctors.map((doc) => (
               <div key={doc.id} className="min-w-[300px] max-w-[300px] bg-white rounded-3xl p-6 shadow-xl shadow-slate-200/40 border border-slate-100 snap-start flex-shrink-0 group hover:-translate-y-2 transition-transform duration-300">
                 <div className="relative mb-6">
-                  <img src={localStorage.getItem('doctorAvatar') || `https://ui-avatars.com/api/?name=Dr+${doc.user?.full_name}&background=eff6ff&color=1d4ed8&size=150`} alt={doc.user?.full_name} className="w-24 h-24 rounded-2xl object-cover shadow-md mx-auto group-hover:scale-105 transition-transform duration-300" />
+                  <img 
+                    src={`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/uploads/doctor_${doc.id}_avatar_doc.jpg`} 
+                    onError={(e) => { e.target.onerror = null; e.target.src = `https://ui-avatars.com/api/?name=Dr+${doc.user?.full_name}&background=eff6ff&color=1d4ed8&size=150`; }}
+                    alt={doc.user?.full_name} 
+                    className="w-24 h-24 rounded-2xl object-cover shadow-md mx-auto group-hover:scale-105 transition-transform duration-300" 
+                  />
                   <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-white px-3 py-1 rounded-full shadow-md text-xs font-bold text-slate-700 flex items-center gap-1">
                     <Star size={12} className="text-yellow-400 fill-yellow-400" /> 4.9
                   </div>
