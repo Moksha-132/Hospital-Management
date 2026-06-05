@@ -38,7 +38,7 @@ const DoctorDashboard = () => {
 
   const fetchProfile = async () => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/doctors/profile', { headers });
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/doctors/profile`, { headers });
       if (res.ok) {
         const data = await res.json();
         setProfile(data);
@@ -49,14 +49,14 @@ const DoctorDashboard = () => {
 
   const fetchSlots = async () => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/doctors/my/slots', { headers });
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/doctors/my/slots`, { headers });
       if (res.ok) setSlots(await res.json());
     } catch (err) { console.error(err); }
   };
 
   const fetchAppointments = async () => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/doctors/my/appointments', { headers });
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/doctors/my/appointments`, { headers });
       if (res.ok) setAppointments(await res.json());
     } catch (err) { console.error(err); }
   };
@@ -65,7 +65,7 @@ const DoctorDashboard = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/doctors/profile', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/doctors/profile`, {
         method: 'PUT',
         headers,
         body: JSON.stringify(profile)
@@ -84,7 +84,7 @@ const DoctorDashboard = () => {
     formData.append('file', file);
     
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/doctors/profile/avatar', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/doctors/profile/avatar`, {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${token}` },
         body: formData
@@ -133,7 +133,7 @@ const DoctorDashboard = () => {
         const [hours, minutes] = newSlot.endTime.split(':');
         eTime.setHours(parseInt(hours, 10), parseInt(minutes, 10), 0, 0);
 
-        const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/doctors/slots', {
+        const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/doctors/slots`, {
           method: 'POST',
           headers,
           body: JSON.stringify({ 

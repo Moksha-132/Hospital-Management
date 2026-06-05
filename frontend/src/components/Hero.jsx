@@ -7,7 +7,7 @@ const Hero = () => {
   const [ratingStats, setRatingStats] = useState({ average: 5.0, total: 0 });
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/doctors/average-rating')
+    fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/doctors/average-rating`)
       .then(res => res.json())
       .then(data => {
         if (data && data.total > 0) setRatingStats(data);

@@ -43,7 +43,7 @@ const AdminDashboard = () => {
 
   const fetchRatings = async () => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/admin/ratings', { headers });
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/admin/ratings`, { headers });
       if (res.ok) {
         const data = await res.json();
         setRatings(prevRatings => {
@@ -60,28 +60,28 @@ const AdminDashboard = () => {
 
   const fetchStats = async () => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/admin/dashboard/stats', { headers });
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/admin/dashboard/stats`, { headers });
       if (res.ok) setStats(await res.json());
     } catch (err) { console.error(err); }
   };
 
   const fetchInventory = async () => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/admin/inventory', { headers });
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/admin/inventory`, { headers });
       if (res.ok) setInventory(await res.json());
     } catch (err) { console.error(err); }
   };
 
   const fetchPatients = async () => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/admin/patients', { headers });
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/admin/patients`, { headers });
       if (res.ok) setPatients(await res.json());
     } catch (err) { console.error(err); }
   };
 
   const fetchDoctors = async () => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/admin/doctors', { headers });
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/admin/doctors`, { headers });
       if (res.ok) setDoctors(await res.json());
     } catch (err) { console.error(err); }
   };
@@ -108,7 +108,7 @@ const AdminDashboard = () => {
   const handleAddItem = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/admin/inventory', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/admin/inventory`, {
         method: 'POST',
         headers,
         body: JSON.stringify(newItem)

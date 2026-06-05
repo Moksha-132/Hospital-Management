@@ -89,7 +89,7 @@ const PatientDashboard = () => {
 
   const fetchOrders = async () => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/patients/my/orders', { headers });
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/patients/my/orders`, { headers });
       if (res.ok) setOrders(await res.json());
     } catch (err) { console.error(err); }
   };
@@ -103,14 +103,14 @@ const PatientDashboard = () => {
 
   const fetchAppointments = async () => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/patients/appointments', { headers });
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/patients/appointments`, { headers });
       if (res.ok) setAppointments(await res.json());
     } catch (err) { console.error(err); }
   };
 
   const fetchInventory = async () => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/patients/inventory', { headers });
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/patients/inventory`, { headers });
       if (res.ok) setInventory(await res.json());
     } catch (err) { console.error(err); }
   };
@@ -118,7 +118,7 @@ const PatientDashboard = () => {
   const handleBookSlot = async (slotId) => {
     setLoading(true);
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/patients/appointments', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/patients/appointments`, {
         method: 'POST',
         headers,
         body: JSON.stringify({ slot_id: slotId })
@@ -489,7 +489,7 @@ const PatientDashboard = () => {
                 {(() => {
                   const handleDownloadReceipt = async (group) => {
                     try {
-                      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/patients/generate-receipt', {
+                      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/patients/generate-receipt`, {
                         method: 'POST',
                         headers: {
                           'Authorization': `Bearer ${localStorage.getItem('token')}`,
