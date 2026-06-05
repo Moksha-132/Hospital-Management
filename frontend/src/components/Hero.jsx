@@ -100,8 +100,8 @@ const Hero = () => {
             >
               {/* Doctor Image Mockup */}
               <img 
-                src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=1000&auto=format&fit=crop" 
-                alt="Modern Hospital Building" 
+                src="https://i.pinimg.com/736x/ff/7b/ec/ff7bece704277092692f264ba0e511ff.jpg" 
+                alt="Hospital Facility" 
                 className="relative z-10 w-full object-cover object-top rounded-b-none rounded-t-[100px] border-b-8 border-[#FF6B00] shadow-2xl h-[500px]"
               />
 
