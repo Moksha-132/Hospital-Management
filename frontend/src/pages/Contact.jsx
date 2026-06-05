@@ -5,6 +5,10 @@ import { Mail, Phone, MapPin, Send } from 'lucide-react';
 const Contact = () => {
   return (
     <div className="min-h-screen bg-[#F4F9FF] pt-32 pb-24 font-sans relative overflow-hidden">
+      {/* Background abstract shapes */}
+      <div className="absolute top-0 right-0 w-1/2 h-2/3 bg-gradient-to-bl from-blue-500/20 to-transparent rounded-bl-full pointer-events-none"></div>
+      <div className="absolute bottom-0 left-0 w-1/2 h-2/3 bg-gradient-to-tr from-blue-500/20 to-transparent rounded-tr-full pointer-events-none"></div>
+      
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Heading */}
@@ -51,9 +55,9 @@ const Contact = () => {
               </div>
               <h3 className="font-bold text-[#1E3A8A] text-[17px] mb-2">Visit Us</h3>
               <p className="text-slate-500 text-[13px] leading-relaxed">
-                123 Health Avenue<br />
-                Medical District<br />
-                New York, NY 10001
+                Anantapur<br />
+                Andhra Pradesh<br />
+                India
               </p>
             </div>
 
@@ -76,8 +80,7 @@ const Contact = () => {
               </div>
               <h3 className="font-bold text-[#1E3A8A] text-[17px] mb-2">Email Us</h3>
               <p className="text-slate-500 text-[13px] leading-relaxed">
-                support@medicare-sys.com<br />
-                admin@medicare-sys.com
+                lmoksha.132@gmail.com
               </p>
             </div>
           </motion.div>

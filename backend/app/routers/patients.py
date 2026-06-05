@@ -12,6 +12,11 @@ from app.utils.email import send_patient_report_notification
 
 router = APIRouter(prefix="/patients", tags=["Patients"])
 
+@router.get("/inventory", response_model=List[schemas.InventoryItemResponse])
+def get_inventory(db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
+    """Patient views all inventory items"""
+    return db.query(models.InventoryItem).all()
+
 @router.get("/doctors", response_model=List[schemas.DoctorResponse])
 def search_doctors(specialty: str = None, db: Session = Depends(get_db)):
     """Search for doctors, optionally filtering by specialty"""
@@ -62,6 +67,21 @@ def get_prescription(appointment_id: int, db: Session = Depends(get_db), current
         
     return appointment.prescription
 
+@router.post("/upload-prescription")
+async def upload_pharmacy_prescription(file: UploadFile = File(...), current_user: models.User = Depends(get_current_user)):
+    """Upload prescription file for ordering medicines"""
+    if not os.path.exists("uploads"):
+        os.makedirs("uploads")
+    safe_filename = file.filename.replace(" ", "_")
+    filename = f"pharmacy_{current_user.id}_{uuid.uuid4().hex[:8]}_{safe_filename}"
+    file_path = os.path.join("uploads", filename)
+    with open(file_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+        
+    file_url = f"http://localhost:8000/uploads/{filename}"
+    return {"message": "File uploaded successfully", "file_url": file_url}
+
+
 @router.post("/appointments/{appointment_id}/upload")
 async def upload_patient_file(appointment_id: int, background_tasks: BackgroundTasks, file: UploadFile = File(...), db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
     """Upload patient files/images"""
@@ -96,7 +116,7 @@ async def upload_patient_file(appointment_id: int, background_tasks: BackgroundT
     return {"message": "File uploaded successfully", "file_url": file_url}
 
 @router.post("/order-medicine/{item_id}")
-def order_medicine(item_id: int, quantity: int = 1, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
+def order_medicine(item_id: int, quantity: int = 1, prescription_url: str = None, delivery_address: str = None, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
     """Order medicine with mock payment gateway"""
     if current_user.role != models.UserRole.PATIENT:
         raise HTTPException(status_code=403, detail="Only patients can order medicine")
@@ -112,6 +132,16 @@ def order_medicine(item_id: int, quantity: int = 1, db: Session = Depends(get_db
     total_price = item.price * quantity
     payment_id = f"pi_med_{uuid.uuid4().hex[:10]}"
     
+    new_order = models.PharmacyOrder(
+        patient_id=current_user.id,
+        item_id=item_id,
+        quantity=quantity,
+        total_price=total_price,
+        prescription_url=prescription_url,
+        delivery_address=delivery_address
+    )
+    db.add(new_order)
+    
     item.stock_quantity -= quantity
     db.commit()
     
@@ -122,6 +152,61 @@ def order_medicine(item_id: int, quantity: int = 1, db: Session = Depends(get_db
         "total_paid": total_price,
         "payment_id": payment_id
     }
+
+@router.post("/generate-receipt")
+def generate_receipt(receipt_data: dict, current_user: models.User = Depends(get_current_user)):
+    from reportlab.pdfgen import canvas
+    from reportlab.lib.pagesizes import letter
+    import os
+    
+    file_name = f"receipt_{receipt_data['group_id']}.pdf"
+    file_path = f"uploads/{file_name}"
+    
+    if not os.path.exists("uploads"):
+        os.makedirs("uploads")
+        
+    c = canvas.Canvas(file_path, pagesize=letter)
+    c.setFont("Helvetica-Bold", 24)
+    c.drawString(50, 750, "MEDICARE")
+    
+    c.setFont("Helvetica", 14)
+    c.drawString(50, 710, "PAYMENT RECEIPT")
+    c.drawString(50, 680, f"Order #: {receipt_data['group_id']}")
+    c.drawString(50, 660, f"Date: {receipt_data['created_at']}")
+    c.drawString(50, 640, f"Patient: {current_user.full_name}")
+    
+    y = 600
+    c.setFont("Helvetica-Bold", 12)
+    c.drawString(50, y, "Items Purchased:")
+    y -= 20
+    
+    c.setFont("Helvetica", 12)
+    for item in receipt_data['items']:
+        c.drawString(70, y, f"- {item['name']} (Qty: {item['quantity']}) : ${item['price']}")
+        y -= 20
+        
+    y -= 20
+    c.setFont("Helvetica-Bold", 14)
+    c.drawString(50, y, f"Total Paid: ${receipt_data['total_price']}")
+    
+    if receipt_data.get('delivery_address'):
+        y -= 40
+        c.setFont("Helvetica-Bold", 12)
+        c.drawString(50, y, "Delivery Address:")
+        c.setFont("Helvetica", 12)
+        y -= 20
+        c.drawString(70, y, receipt_data['delivery_address'].replace('\n', ', ')[:100])
+        
+    c.save()
+    
+    return {"receipt_url": f"http://localhost:8000/{file_path}"}
+
+@router.get("/my/orders", response_model=List[schemas.PharmacyOrderResponse])
+def get_my_orders(db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
+    """Patient views all past pharmacy orders"""
+    if current_user.role != models.UserRole.PATIENT:
+        raise HTTPException(status_code=403, detail="Only patients can view orders")
+    return db.query(models.PharmacyOrder).filter(models.PharmacyOrder.patient_id == current_user.id).order_by(models.PharmacyOrder.created_at.desc()).all()
 
 @router.post("/appointments/{appointment_id}/message")
 def patient_send_message(appointment_id: int, message_data: schemas.MessageCreate, background_tasks: BackgroundTasks, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):

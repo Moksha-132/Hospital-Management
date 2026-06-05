@@ -18,9 +18,9 @@ const DoctorDashboard = () => {
   const [messageContent, setMessageContent] = useState('');
   
   const [avatarPreview, setAvatarPreview] = useState(null);
-  const [filterDate, setFilterDate] = useState(new Date().toISOString().split('T')[0]);
+  const filterDate = new Date().toISOString().split('T')[0];
 
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem('token') || sessionStorage.getItem('token');
   const headers = {
     'Authorization': `Bearer ${token}`,
     'Content-Type': 'application/json'
@@ -38,7 +38,7 @@ const DoctorDashboard = () => {
 
   const fetchProfile = async () => {
     try {
-      const res = await fetch('http://localhost:8000/doctors/profile', { headers });
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/doctors/profile', { headers });
       if (res.ok) {
         const data = await res.json();
         setProfile(data);
@@ -49,14 +49,14 @@ const DoctorDashboard = () => {
 
   const fetchSlots = async () => {
     try {
-      const res = await fetch('http://localhost:8000/doctors/my/slots', { headers });
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/doctors/my/slots', { headers });
       if (res.ok) setSlots(await res.json());
     } catch (err) { console.error(err); }
   };
 
   const fetchAppointments = async () => {
     try {
-      const res = await fetch('http://localhost:8000/doctors/my/appointments', { headers });
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/doctors/my/appointments', { headers });
       if (res.ok) setAppointments(await res.json());
     } catch (err) { console.error(err); }
   };
@@ -65,7 +65,7 @@ const DoctorDashboard = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:8000/doctors/profile', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/doctors/profile', {
         method: 'PUT',
         headers,
         body: JSON.stringify(profile)
@@ -84,7 +84,7 @@ const DoctorDashboard = () => {
     formData.append('file', file);
     
     try {
-      const res = await fetch('http://localhost:8000/doctors/profile/avatar', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/doctors/profile/avatar', {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${token}` },
         body: formData
@@ -133,7 +133,7 @@ const DoctorDashboard = () => {
         const [hours, minutes] = newSlot.endTime.split(':');
         eTime.setHours(parseInt(hours, 10), parseInt(minutes, 10), 0, 0);
 
-        const res = await fetch('http://localhost:8000/doctors/slots', {
+        const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/doctors/slots', {
           method: 'POST',
           headers,
           body: JSON.stringify({ 
@@ -156,7 +156,7 @@ const DoctorDashboard = () => {
 
   const handleDeleteSlot = async (id) => {
     try {
-      const res = await fetch(`http://localhost:8000/doctors/slots/${id}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/doctors/slots/${id}`, {
         method: 'DELETE',
         headers
       });
@@ -189,7 +189,7 @@ const DoctorDashboard = () => {
     }
 
     try {
-      const res = await fetch(`http://localhost:8000/doctors/appointments/${id}/${action}${urlSuffix}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/doctors/appointments/${id}/${action}${urlSuffix}`, {
         method: 'PUT',
         headers
       });
@@ -200,7 +200,7 @@ const DoctorDashboard = () => {
   const handleStartCall = async (apt) => {
     window.open(apt.meeting_link, "_blank");
     try {
-      await fetch(`http://localhost:8000/doctors/appointments/${apt.id}/notify-call`, {
+      await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/doctors/appointments/${apt.id}/notify-call`, {
         method: 'POST',
         headers
       });
@@ -216,10 +216,14 @@ const DoctorDashboard = () => {
   const submitPrescription = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch(`http://localhost:8000/doctors/appointments/${selectedAptId}/prescription`, {
+      const payload = {
+        ...prescriptionData,
+        appointment_id: selectedAptId
+      };
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/doctors/appointments/${selectedAptId}/prescription`, {
         method: 'POST',
         headers,
-        body: JSON.stringify(prescriptionData)
+        body: JSON.stringify(payload)
       });
       if (res.ok) {
         setShowPrescribeModal(false);
@@ -263,7 +267,7 @@ const DoctorDashboard = () => {
     e.preventDefault();
     if (!messageContent.trim()) return;
     try {
-      const res = await fetch(`http://localhost:8000/doctors/appointments/${selectedAptId}/message`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/doctors/appointments/${selectedAptId}/message`, {
         method: 'POST',
         headers,
         body: JSON.stringify({ message: messageContent })
@@ -286,10 +290,13 @@ const DoctorDashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col md:flex-row pt-20">
+    <div className="min-h-screen bg-slate-50 flex flex-col md:flex-row pt-20 relative overflow-hidden">
+      {/* Background abstract shapes */}
+      <div className="absolute top-0 right-0 w-1/2 h-2/3 bg-gradient-to-bl from-blue-500/20 to-transparent rounded-bl-full pointer-events-none z-0"></div>
+      <div className="absolute bottom-0 left-0 w-1/2 h-2/3 bg-gradient-to-tr from-blue-500/20 to-transparent rounded-tr-full pointer-events-none z-0"></div>
       
       {/* Sidebar Navigation */}
-      <div className="w-full md:w-64 bg-white border-r border-slate-200 h-auto md:min-h-[calc(100vh-5rem)] flex-shrink-0 p-4 space-y-2">
+      <div className="w-full md:w-64 bg-white/80 backdrop-blur-md border-r border-slate-200 h-auto md:min-h-[calc(100vh-5rem)] flex-shrink-0 p-4 space-y-2 relative z-10">
         <h2 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4 px-3 mt-4">Doctor Menu</h2>
         
         <button onClick={() => setActiveTab('slots')} className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold transition-colors ${activeTab === 'slots' ? 'bg-blue-50 text-blue-700' : 'text-slate-600 hover:bg-slate-50'}`}>
@@ -310,7 +317,7 @@ const DoctorDashboard = () => {
       </div>
 
       {/* Main Content Area */}
-      <div className="flex-grow p-6 lg:p-10 max-w-6xl w-full">
+      <div className="flex-grow p-6 lg:p-10 max-w-6xl w-full relative z-10">
         <div className="mb-8">
           <h1 className="text-3xl font-extrabold text-[#1E3A8A] flex items-center gap-3">
             <Activity className="text-blue-500" size={32} />
@@ -466,6 +473,12 @@ const DoctorDashboard = () => {
                         <Clock size={16} className="text-slate-400"/>
                         Slot #{apt.slot_id} • Payment: <span className="capitalize">{apt.payment_status}</span>
                       </p>
+                      {apt.rating && (
+                        <div className="mt-3 bg-orange-50 border border-orange-100 p-3 rounded-lg inline-block">
+                          <p className="text-sm font-bold text-orange-700 flex items-center gap-1">⭐ {apt.rating}/5 Rating Received</p>
+                          {apt.review && <p className="text-xs text-orange-600 mt-1 italic">"{apt.review}"</p>}
+                        </div>
+                      )}
                     </div>
                     
                     <div className="flex items-center gap-2">
@@ -641,7 +654,7 @@ const DoctorDashboard = () => {
       
       {/* Prescribe Modal */}
       {showPrescribeModal && (
-        <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex justify-center items-center p-4">
+        <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-[60] flex justify-center items-center p-4">
           <div className="bg-white rounded-2xl p-6 w-full max-w-lg shadow-2xl">
             <h3 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
               <FileText className="text-blue-500" /> Write Prescription
@@ -686,7 +699,7 @@ const DoctorDashboard = () => {
 
       {/* Message Modal */}
       {showMessageModal && (
-        <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex justify-center items-center p-4">
+        <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-[60] flex justify-center items-center p-4">
           <div className="bg-white rounded-2xl p-6 w-full max-w-lg shadow-2xl">
             <h3 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
               <MessageCircle className="text-blue-500" /> Send Message to Patient
@@ -715,3 +728,4 @@ const DoctorDashboard = () => {
 };
 
 export default DoctorDashboard;
+

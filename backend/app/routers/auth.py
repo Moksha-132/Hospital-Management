@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, BackgroundTasks
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from app import models, schemas
@@ -7,6 +7,16 @@ from app.utils.security import verify_password, get_password_hash, create_access
 from app.utils.deps import get_current_user
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
+
+from pydantic import BaseModel
+
+class ForgotPasswordRequest(BaseModel):
+    email: str
+
+class ResetPasswordRequest(BaseModel):
+    email: str
+    otp: str
+    new_password: str
 
 @router.post("/register", response_model=schemas.UserResponse)
 def register_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
@@ -55,3 +65,52 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
 @router.get("/me", response_model=schemas.UserResponse)
 def get_current_user_profile(current_user: models.User = Depends(get_current_user)):
     return current_user
+
+@router.post("/forgot-password")
+def forgot_password(req: ForgotPasswordRequest, background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
+    user = db.query(models.User).filter(models.User.email == req.email).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="Email not found in our records")
+    
+    # Generate 6-digit OTP
+    import random
+    otp = str(random.randint(100000, 999999))
+    
+    # Save OTP to DB
+    # Clean up old OTPs for this email
+    db.query(models.PasswordResetOTP).filter(models.PasswordResetOTP.email == req.email).delete()
+    
+    new_otp = models.PasswordResetOTP(email=req.email, otp=otp)
+    db.add(new_otp)
+    db.commit()
+    
+    # Send email
+    from app.utils.email import send_password_reset_otp_email
+    background_tasks.add_task(
+        send_password_reset_otp_email,
+        user.email,
+        user.full_name,
+        otp
+    )
+    
+    return {"message": "An OTP has been sent to your email address."}
+
+@router.post("/reset-password")
+def reset_password(req: ResetPasswordRequest, db: Session = Depends(get_db)):
+    user = db.query(models.User).filter(models.User.email == req.email).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="Email not found")
+        
+    otp_record = db.query(models.PasswordResetOTP).filter(
+        models.PasswordResetOTP.email == req.email,
+        models.PasswordResetOTP.otp == req.otp
+    ).first()
+    
+    if not otp_record:
+        raise HTTPException(status_code=400, detail="Invalid OTP")
+        
+    user.hashed_password = get_password_hash(req.new_password)
+    db.delete(otp_record)
+    db.commit()
+    
+    return {"message": "Password has been successfully reset. You can now login."}

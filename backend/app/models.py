@@ -99,3 +99,26 @@ class InventoryItem(Base):
     stock_quantity = Column(Integer, default=0)
     price = Column(Float, nullable=False)
     requires_prescription = Column(Boolean, default=False)
+
+class PasswordResetOTP(Base):
+    __tablename__ = "password_reset_otps"
+    id = Column(Integer, primary_key=True, index=True)
+    email = Column(String, index=True, nullable=False)
+    otp = Column(String, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+class PharmacyOrder(Base):
+    __tablename__ = "pharmacy_orders"
+
+    id = Column(Integer, primary_key=True, index=True)
+    patient_id = Column(Integer, ForeignKey("users.id"))
+    item_id = Column(Integer, ForeignKey("inventory.id"))
+    quantity = Column(Integer, nullable=False)
+    total_price = Column(Float, nullable=False)
+    status = Column(String, default="completed")
+    prescription_url = Column(String, nullable=True)
+    delivery_address = Column(String, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    patient = relationship("User", backref="pharmacy_orders")
+    item = relationship("InventoryItem")

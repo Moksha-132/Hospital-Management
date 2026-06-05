@@ -7,7 +7,7 @@ const TopDoctors = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch('http://localhost:8000/patients/doctors')
+    fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/patients/doctors')
       .then(res => res.json())
       .then(data => setDoctors(data))
       .catch(err => console.error(err));
@@ -81,3 +81,4 @@ const TopDoctors = () => {
 };
 
 export default TopDoctors;
+

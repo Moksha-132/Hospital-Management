@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
@@ -9,6 +9,15 @@ import Register from './pages/Register';
 import AdminDashboard from './pages/AdminDashboard';
 import DoctorDashboard from './pages/DoctorDashboard';
 import PatientDashboard from './pages/PatientDashboard';
+import Privacy from './pages/Privacy';
+import Terms from './pages/Terms';
+
+const ConditionalFooter = () => {
+  const location = useLocation();
+  const hideFooterPaths = ['/admin-dashboard', '/doctor-dashboard', '/patient-dashboard'];
+  if (hideFooterPaths.includes(location.pathname)) return null;
+  return <Footer />;
+};
 
 function App() {
   return (
@@ -24,9 +33,11 @@ function App() {
             <Route path="/admin-dashboard" element={<AdminDashboard />} />
             <Route path="/doctor-dashboard" element={<DoctorDashboard />} />
             <Route path="/patient-dashboard" element={<PatientDashboard />} />
+            <Route path="/privacy" element={<Privacy />} />
+            <Route path="/terms" element={<Terms />} />
           </Routes>
         </main>
-        <Footer />
+        <ConditionalFooter />
       </div>
     </Router>
   );

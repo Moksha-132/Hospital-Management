@@ -48,7 +48,7 @@ const Footer = () => {
             <ul className="space-y-4 text-blue-200 text-sm font-medium">
               <li className="flex items-start gap-3">
                 <MapPin size={18} className="text-[#FF6B00] shrink-0 mt-0.5" />
-                <span>123 Health Avenue, Medical District,<br/>NY 10001</span>
+                <span>Anantapur, Andhra Pradesh,<br/>India</span>
               </li>
               <li className="flex items-center gap-3">
                 <Phone size={18} className="text-[#FF6B00] shrink-0" />
@@ -56,7 +56,7 @@ const Footer = () => {
               </li>
               <li className="flex items-center gap-3">
                 <Mail size={18} className="text-[#FF6B00] shrink-0" />
-                <span>support@medicare-sys.com</span>
+                <span>lmoksha.132@gmail.com</span>
               </li>
             </ul>
           </div>
@@ -67,8 +67,8 @@ const Footer = () => {
         <div className="pt-8 border-t border-blue-800 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-blue-300">
           <p>© 2026 Medicare Management System. All rights reserved.</p>
           <div className="flex gap-6">
-            <Link to="#" className="hover:text-white transition-colors">Privacy Policy</Link>
-            <Link to="#" className="hover:text-white transition-colors">Terms of Service</Link>
+            <Link to="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
+            <Link to="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
           </div>
         </div>
       </div>

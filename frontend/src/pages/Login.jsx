@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Mail, Lock, Activity, ArrowRight } from 'lucide-react';
+import { Mail, Lock, Activity, ArrowRight, ArrowLeft } from 'lucide-react';
 
 const Login = () => {
   const location = useLocation();
@@ -8,8 +8,63 @@ const Login = () => {
     email: '',
     password: ''
   });
+  const [rememberMe, setRememberMe] = useState(false);
+  const [isForgotPassword, setIsForgotPassword] = useState(false);
+  const [isOtpStep, setIsOtpStep] = useState(false);
+  const [forgotEmail, setForgotEmail] = useState('');
+  const [otp, setOtp] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
 
   const [error, setError] = useState('');
+
+  const handleForgotPassword = async (e) => {
+    e.preventDefault();
+    setError('');
+    setSuccessMessage('');
+    try {
+      const response = await fetch('http://127.0.0.1:8000/auth/forgot-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: forgotEmail })
+      });
+      const data = await response.json();
+      if (response.ok) {
+        setSuccessMessage(data.message);
+        setIsOtpStep(true);
+      } else {
+        setError(data.detail || 'Failed to request password reset');
+      }
+    } catch (err) {
+      setError('Network error');
+    }
+  };
+
+  const handleResetPassword = async (e) => {
+    e.preventDefault();
+    setError('');
+    setSuccessMessage('');
+    try {
+      const response = await fetch('http://127.0.0.1:8000/auth/reset-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: forgotEmail, otp, new_password: newPassword })
+      });
+      const data = await response.json();
+      if (response.ok) {
+        setSuccessMessage(data.message);
+        setIsOtpStep(false);
+        setIsForgotPassword(false);
+        setForgotEmail('');
+        setOtp('');
+        setNewPassword('');
+      } else {
+        setError(data.detail || 'Failed to reset password');
+      }
+    } catch (err) {
+      setError('Network error');
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -20,7 +75,7 @@ const Login = () => {
     formDataObj.append('password', formData.password);
 
     try {
-      const response = await fetch('http://localhost:8000/auth/login', {
+      const response = await fetch('http://127.0.0.1:8000/auth/login', {
         method: 'POST',
         body: formDataObj,
       });
@@ -28,10 +83,15 @@ const Login = () => {
       const data = await response.json();
 
       if (response.ok) {
-        // Store JWT token
-        localStorage.setItem('token', data.access_token);
-        localStorage.setItem('role', data.role);
-        localStorage.setItem('name', data.name);
+        if (rememberMe) {
+          localStorage.setItem('token', data.access_token);
+          localStorage.setItem('role', data.role);
+          localStorage.setItem('name', data.name);
+        } else {
+          sessionStorage.setItem('token', data.access_token);
+          sessionStorage.setItem('role', data.role);
+          sessionStorage.setItem('name', data.name);
+        }
         
         // Redirect to dashboard based on role
         window.location.href = `/${data.role}-dashboard`;
@@ -44,27 +104,121 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col justify-center pt-32 pb-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
+    <div className="min-h-screen bg-slate-50 flex flex-col justify-center pt-32 pb-12 sm:px-6 lg:px-8 relative overflow-hidden">
+      {/* Background abstract shapes */}
+      <div className="absolute top-0 right-0 w-1/2 h-2/3 bg-gradient-to-bl from-blue-500/20 to-transparent rounded-bl-full pointer-events-none"></div>
+      <div className="absolute bottom-0 left-0 w-1/2 h-2/3 bg-gradient-to-tr from-blue-500/20 to-transparent rounded-tr-full pointer-events-none"></div>
+      
+      <div className="sm:mx-auto sm:w-full sm:max-w-md relative z-10">
         <div className="flex justify-center">
           <div className="bg-[#1E3A8A] p-3 rounded-xl text-white shadow-lg shadow-blue-900/20">
             <Activity size={32} />
           </div>
         </div>
         <h2 className="mt-6 text-center text-3xl font-extrabold text-[#1E3A8A]">
-          Welcome back
+          {isForgotPassword ? 'Reset Password' : 'Welcome back'}
         </h2>
         <p className="mt-2 text-center text-sm text-slate-600">
-          Don't have an account?{' '}
-          <Link to="/register" className="font-bold text-blue-600 hover:text-[#FF6B00] transition-colors">
-            Register now
-          </Link>
+          {isForgotPassword ? 'Enter your email to receive a temporary password.' : (
+            <>
+              Don't have an account?{' '}
+              <Link to="/register" className="font-bold text-blue-600 hover:text-[#FF6B00] transition-colors">
+                Register now
+              </Link>
+            </>
+          )}
         </p>
       </div>
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md relative z-10">
         <div className="bg-white py-8 px-4 shadow-xl shadow-slate-200/50 sm:rounded-2xl sm:px-10 border border-slate-100">
-          <form className="space-y-6" onSubmit={handleSubmit}>
+          {isForgotPassword ? (
+            <form className="space-y-6" onSubmit={isOtpStep ? handleResetPassword : handleForgotPassword}>
+              {successMessage && (
+                <div className="bg-emerald-50 text-emerald-700 p-4 rounded-xl text-sm font-medium border border-emerald-100 mb-4 flex flex-col gap-2">
+                  <p>{successMessage}</p>
+                </div>
+              )}
+              {error && (
+                <div className="bg-red-50 text-red-600 p-3 rounded-xl text-sm font-medium border border-red-100">
+                  {error}
+                </div>
+              )}
+              
+              {!isOtpStep ? (
+                <div>
+                  <label className="block text-sm font-semibold text-slate-700 mb-2">
+                    Email address
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <Mail className="h-5 w-5 text-slate-400" />
+                    </div>
+                    <input
+                      type="email"
+                      required
+                      className="block w-full pl-10 bg-slate-50 border border-slate-200 rounded-xl py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                      placeholder="doctor@hospital.com"
+                      value={forgotEmail}
+                      onChange={(e) => setForgotEmail(e.target.value)}
+                    />
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <div>
+                    <label className="block text-sm font-semibold text-slate-700 mb-2">
+                      Enter 6-Digit OTP
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      maxLength="6"
+                      className="block w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all tracking-widest text-center text-xl font-bold"
+                      placeholder="------"
+                      value={otp}
+                      onChange={(e) => setOtp(e.target.value)}
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-slate-700 mb-2">
+                      New Password
+                    </label>
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <Lock className="h-5 w-5 text-slate-400" />
+                      </div>
+                      <input
+                        type="password"
+                        required
+                        className="block w-full pl-10 bg-slate-50 border border-slate-200 rounded-xl py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                        placeholder="••••••••"
+                        value={newPassword}
+                        onChange={(e) => setNewPassword(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                </>
+              )}
+              
+              <div className="flex flex-col gap-3">
+                <button
+                  type="submit"
+                  className="w-full flex justify-center items-center gap-2 bg-[#1E3A8A] hover:bg-blue-800 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg shadow-blue-900/20 transition-all"
+                >
+                  {isOtpStep ? "Save New Password" : "Send Reset Code"} <ArrowRight size={18} />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { setIsForgotPassword(false); setIsOtpStep(false); setError(''); setSuccessMessage(''); }}
+                  className="w-full flex justify-center items-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3.5 px-4 rounded-xl transition-all"
+                >
+                  <ArrowLeft size={18} /> Back to Login
+                </button>
+              </div>
+            </form>
+          ) : (
+            <form className="space-y-6" onSubmit={handleSubmit}>
             
             {location.state?.message && (
               <div className="bg-emerald-50 text-emerald-600 p-3 rounded-xl text-sm font-medium border border-emerald-100 mb-4">
@@ -122,6 +276,8 @@ const Login = () => {
                   id="remember-me"
                   name="remember-me"
                   type="checkbox"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
                   className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-slate-300 rounded"
                 />
                 <label htmlFor="remember-me" className="ml-2 block text-sm text-slate-600">
@@ -130,9 +286,9 @@ const Login = () => {
               </div>
 
               <div className="text-sm">
-                <a href="#" className="font-bold text-blue-600 hover:text-[#FF6B00]">
+                <button type="button" onClick={() => { setIsForgotPassword(true); setError(''); }} className="font-bold text-blue-600 hover:text-[#FF6B00]">
                   Forgot password?
-                </a>
+                </button>
               </div>
             </div>
 
@@ -145,6 +301,7 @@ const Login = () => {
               </button>
             </div>
           </form>
+          )}
         </div>
       </div>
     </div>

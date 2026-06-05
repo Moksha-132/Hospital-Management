@@ -9,6 +9,8 @@ from app.utils.deps import get_current_doctor, get_current_user
 from datetime import datetime
 from fastapi import BackgroundTasks
 from app.utils.email import send_prescription_notification
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
 
 router = APIRouter(prefix="/doctors", tags=["Doctors"])
 
@@ -16,6 +18,13 @@ router = APIRouter(prefix="/doctors", tags=["Doctors"])
 def get_all_doctors(db: Session = Depends(get_db)):
     doctors = db.query(models.Doctor).filter(models.Doctor.is_verified == True).all()
     return doctors
+
+@router.get("/average-rating")
+def get_average_rating(db: Session = Depends(get_db)):
+    from sqlalchemy import func
+    avg_rating = db.query(func.avg(models.Appointment.rating)).filter(models.Appointment.rating != None).scalar()
+    total_reviews = db.query(func.count(models.Appointment.id)).filter(models.Appointment.rating != None).scalar()
+    return {"average": round(avg_rating or 0, 1), "total": total_reviews or 0}
 
 @router.get("/profile", response_model=schemas.DoctorResponse)
 def get_my_profile(db: Session = Depends(get_db), current_user: models.User = Depends(get_current_doctor)):
@@ -211,13 +220,89 @@ def add_prescription(appointment_id: int, prescription: schemas.PrescriptionCrea
     db.commit()
     db.refresh(new_prescription)
     
+    pdf_filename = f"prescription_pdf_{appointment_id}.pdf"
+    pdf_path = os.path.join("uploads", pdf_filename)
+    if not os.path.exists("uploads"):
+        os.makedirs("uploads")
+        
+    c = canvas.Canvas(pdf_path, pagesize=letter)
+    width, height = letter
+    
+    # Logo / Header
+    c.setFont("Helvetica-Bold", 24)
+    c.setFillColorRGB(0.1, 0.2, 0.5)
+    c.drawString(50, height - 50, "MEDICARE")
+    
+    c.setFont("Helvetica", 10)
+    c.setFillColorRGB(0.5, 0.5, 0.5)
+    c.drawString(50, height - 65, "Hospital Management System")
+    
+    # Line
+    c.setStrokeColorRGB(0.8, 0.8, 0.8)
+    c.line(50, height - 75, width - 50, height - 75)
+    
+    # Doctor Details
+    c.setFont("Helvetica-Bold", 12)
+    c.setFillColorRGB(0, 0, 0)
+    c.drawString(50, height - 100, f"Dr. {current_user.full_name}")
+    c.setFont("Helvetica", 10)
+    c.drawString(50, height - 115, f"Specialty: {doctor_profile.specialty}")
+    
+    # Patient Details
+    c.setFont("Helvetica-Bold", 12)
+    if appointment.patient:
+        c.drawString(width - 250, height - 100, f"Patient: {appointment.patient.full_name}")
+    c.setFont("Helvetica", 10)
+    c.drawString(width - 250, height - 115, f"Date: {datetime.now().strftime('%B %d, %Y %H:%M')}")
+    c.drawString(width - 250, height - 130, f"Appointment ID: #{appointment.id}")
+    
+    # Prescription Title
+    c.setFont("Helvetica-Bold", 16)
+    c.drawString(50, height - 160, "PRESCRIPTION DETAILS")
+    
+    # Content
+    y = height - 190
+    c.setFont("Helvetica-Bold", 12)
+    c.drawString(50, y, "Medicines:")
+    y -= 20
+    c.setFont("Helvetica", 11)
+    
+    medicines_lines = prescription.medicines.split('\n') if prescription.medicines else ["None"]
+    for line in medicines_lines:
+        c.drawString(60, y, line)
+        y -= 15
+        
+    y -= 10
+    c.setFont("Helvetica-Bold", 12)
+    c.drawString(50, y, "Instructions / Notes:")
+    y -= 20
+    c.setFont("Helvetica", 11)
+    
+    instructions_lines = prescription.instructions.split('\n') if prescription.instructions else ["None"]
+    for line in instructions_lines:
+        c.drawString(60, y, line)
+        y -= 15
+        
+    # Signature
+    y -= 50
+    c.setFont("Times-Italic", 14)
+    c.drawString(width - 200, y, f"Dr. {current_user.full_name}")
+    y -= 15
+    c.setFont("Helvetica", 10)
+    c.setStrokeColorRGB(0,0,0)
+    c.line(width - 210, y+10, width - 50, y+10)
+    c.drawString(width - 200, y - 5, "Signature")
+    
+    c.save()
+
     if appointment.patient:
         background_tasks.add_task(
             send_prescription_notification, 
             appointment.patient.email, 
             appointment_id,
             appointment.patient.full_name,
-            current_user.full_name
+            current_user.full_name,
+            pdf_path
         )
     
     return new_prescription

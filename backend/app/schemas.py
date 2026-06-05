@@ -20,6 +20,11 @@ class UserResponse(UserBase):
     class Config:
         from_attributes = True
 
+class UserUpdate(BaseModel):
+    full_name: Optional[str] = None
+    email: Optional[EmailStr] = None
+    phone: Optional[str] = None
+
 class DoctorBase(BaseModel):
     specialty: str
     consultation_fee: float
@@ -28,6 +33,13 @@ class DoctorBase(BaseModel):
 
 class DoctorCreate(DoctorBase):
     pass
+
+class DoctorUpdate(BaseModel):
+    full_name: Optional[str] = None
+    email: Optional[EmailStr] = None
+    phone: Optional[str] = None
+    specialty: Optional[str] = None
+    consultation_fee: Optional[float] = None
 
 class DoctorResponse(DoctorBase):
     id: int
@@ -103,8 +115,28 @@ class InventoryItemBase(BaseModel):
 class InventoryItemCreate(InventoryItemBase):
     pass
 
+class InventoryItemUpdate(BaseModel):
+    name: Optional[str] = None
+    description: Optional[str] = None
+    price: Optional[float] = None
+    requires_prescription: Optional[bool] = None
+
 class InventoryItemResponse(InventoryItemBase):
     id: int
+    
+    class Config:
+        from_attributes = True
+
+class PharmacyOrderResponse(BaseModel):
+    id: int
+    item_id: int
+    quantity: int
+    total_price: float
+    status: str
+    prescription_url: Optional[str] = None
+    delivery_address: Optional[str] = None
+    created_at: datetime
+    item: InventoryItemResponse
     
     class Config:
         from_attributes = True

@@ -7,9 +7,9 @@ const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const isDashboard = location.pathname.includes('dashboard');
-  const token = localStorage.getItem('token');
-  const role = localStorage.getItem('role');
-  const name = localStorage.getItem('name');
+  const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+  const role = localStorage.getItem('role') || sessionStorage.getItem('role');
+  const name = localStorage.getItem('name') || sessionStorage.getItem('name');
 
   const getGreeting = () => {
     if (!name) return 'Dashboard';
@@ -21,6 +21,9 @@ const Navbar = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('role');
     localStorage.removeItem('name');
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('role');
+    sessionStorage.removeItem('name');
     navigate('/');
   };
 

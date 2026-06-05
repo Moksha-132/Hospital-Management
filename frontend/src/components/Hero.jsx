@@ -1,9 +1,19 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Search, UserCheck, Stethoscope, Video, ChevronRight } from 'lucide-react';
+import { Search, UserCheck, Stethoscope, Video, ChevronRight, Star } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Hero = () => {
+  const [ratingStats, setRatingStats] = useState({ average: 5.0, total: 0 });
+
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/doctors/average-rating')
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.total > 0) setRatingStats(data);
+      })
+      .catch(err => console.error(err));
+  }, []);
   return (
     <section id="home" className="pt-24 pb-20 lg:pt-32 lg:pb-28 relative overflow-hidden bg-[#F4F9FF]">
       
@@ -41,12 +51,15 @@ const Hero = () => {
               {/* Floating Menu in text section */}
               <div className="bg-[#1E40AF] rounded-2xl p-6 text-white w-full max-w-sm shadow-2xl relative">
                 <div className="flex gap-4 items-center mb-6 border-b border-blue-400/30 pb-4">
-                  <div className="bg-blue-500/30 p-4 rounded-xl">
-                    <span className="text-3xl font-black">99%</span>
+                  <div className="bg-blue-500/30 px-4 py-2 rounded-xl flex flex-col items-center justify-center">
+                    <div className="flex text-yellow-400 mb-1">
+                      <Star size={20} fill="currentColor" />
+                    </div>
+                    <span className="text-2xl font-black">{ratingStats.average}</span>
                   </div>
                   <div>
-                    <h4 className="font-bold text-lg">Satisfaction Rate</h4>
-                    <p className="text-blue-200 text-sm">Reliable & trusted platform</p>
+                    <h4 className="font-bold text-lg">Average Doctor Rating</h4>
+                    <p className="text-blue-200 text-sm">Based on {ratingStats.total} patient reviews</p>
                   </div>
                 </div>
                 
@@ -128,3 +141,4 @@ const Hero = () => {
 };
 
 export default Hero;
+
