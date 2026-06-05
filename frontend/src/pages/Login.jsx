@@ -1,117 +1,152 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Activity } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
+import { Mail, Lock, Activity, ArrowRight } from 'lucide-react';
 
 const Login = () => {
-  const navigate = useNavigate();
+  const location = useLocation();
   const [formData, setFormData] = useState({
-    username: '', // FastAPI OAuth2 uses username field for email usually
+    email: '',
     password: ''
   });
+
   const [error, setError] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      // FastAPI OAuth2PasswordRequestForm expects form data
-      const formBody = new URLSearchParams();
-      formBody.append('username', formData.username);
-      formBody.append('password', formData.password);
+    setError('');
 
-      const res = await fetch(`http://127.0.0.1:8000/auth/login`, {
+    const formDataObj = new FormData();
+    formDataObj.append('username', formData.email);
+    formDataObj.append('password', formData.password);
+
+    try {
+      const response = await fetch('http://localhost:8000/auth/login', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: formBody
+        body: formDataObj,
       });
-      if (res.ok) {
-        const data = await res.json();
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Store JWT token
         localStorage.setItem('token', data.access_token);
         localStorage.setItem('role', data.role);
+        localStorage.setItem('name', data.name);
         
-        if (data.role === 'ADMIN') navigate('/admin-dashboard');
-        else if (data.role === 'DOCTOR') navigate('/doctor-dashboard');
-        else navigate('/patient-dashboard');
+        // Redirect to dashboard based on role
+        window.location.href = `/${data.role}-dashboard`;
       } else {
-        const data = await res.json();
-        setError(data.detail || "Invalid credentials");
+        setError(data.detail || 'Login failed');
       }
     } catch (err) {
-      setError("Network error");
+      setError('Network error. Is the backend running?');
     }
   };
 
   return (
-    <div className="min-h-screen bg-white flex flex-col font-sans">
-      {/* Navbar */}
-      <nav className="bg-white px-8 py-4 flex justify-between items-center shadow-sm">
-        <Link to="/" className="flex items-center gap-2 text-blue-600 font-bold text-2xl tracking-tight">
-          <div className="bg-blue-600 text-white p-1 rounded-md"><Activity size={24} /></div> Medicare
-        </Link>
-        <div className="hidden md:flex items-center gap-8 text-sm font-bold text-gray-600">
-          <Link to="/" className="hover:text-blue-600">Home</Link>
-          <Link to="/how-it-works" className="hover:text-blue-600">How It Works</Link>
-          <Link to="/services" className="hover:text-blue-600">Services</Link>
-          <Link to="/about" className="hover:text-blue-600">About</Link>
-          <Link to="/contact" className="hover:text-blue-600">Contact</Link>
+    <div className="min-h-screen bg-slate-50 flex flex-col justify-center pt-32 pb-12 sm:px-6 lg:px-8">
+      <div className="sm:mx-auto sm:w-full sm:max-w-md">
+        <div className="flex justify-center">
+          <div className="bg-[#1E3A8A] p-3 rounded-xl text-white shadow-lg shadow-blue-900/20">
+            <Activity size={32} />
+          </div>
         </div>
-        <div className="flex items-center gap-4 text-sm font-bold">
-          <Link to="/login" className="text-gray-700 hover:text-blue-600">Log In</Link>
-          <Link to="/register" className="bg-[#FF6B00] hover:bg-[#e65c00] text-white px-6 py-2.5 rounded-full transition-colors shadow-md shadow-orange-500/20">
-            Get Started
+        <h2 className="mt-6 text-center text-3xl font-extrabold text-[#1E3A8A]">
+          Welcome back
+        </h2>
+        <p className="mt-2 text-center text-sm text-slate-600">
+          Don't have an account?{' '}
+          <Link to="/register" className="font-bold text-blue-600 hover:text-[#FF6B00] transition-colors">
+            Register now
           </Link>
-        </div>
-      </nav>
+        </p>
+      </div>
 
-      <main className="flex-1 flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-extrabold text-[#1E3A8A] mb-2 tracking-tight">Welcome back</h1>
-          <p className="text-sm font-medium text-gray-500">
-            Don't have an account? <Link to="/register" className="text-blue-600 hover:underline">Create one here</Link>
-          </p>
-        </div>
-
-        <div className="w-full max-w-md bg-white rounded-3xl p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100">
-          
-          {error && (
-            <div className="bg-red-50 text-red-600 p-4 rounded-xl text-sm font-bold mb-6 text-center border border-red-100">
-              {error}
-            </div>
-          )}
-
-          <form onSubmit={handleSubmit} className="space-y-5">
-            <div>
-              <label className="block text-xs font-bold text-gray-700 mb-1">Email address</label>
-              <input 
-                type="email" 
-                placeholder="you@example.com" 
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={formData.username}
-                onChange={(e) => setFormData({...formData, username: e.target.value})}
-                required
-              />
-            </div>
-
-            <div>
-              <div className="flex justify-between items-center mb-1">
-                 <label className="block text-xs font-bold text-gray-700">Password</label>
-                 <Link to="#" className="text-xs font-bold text-blue-600 hover:underline">Forgot password?</Link>
+      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+        <div className="bg-white py-8 px-4 shadow-xl shadow-slate-200/50 sm:rounded-2xl sm:px-10 border border-slate-100">
+          <form className="space-y-6" onSubmit={handleSubmit}>
+            
+            {location.state?.message && (
+              <div className="bg-emerald-50 text-emerald-600 p-3 rounded-xl text-sm font-medium border border-emerald-100 mb-4">
+                {location.state.message}
               </div>
-              <input 
-                type="password" 
-                placeholder="••••••••" 
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={formData.password}
-                onChange={(e) => setFormData({...formData, password: e.target.value})}
-                required
-              />
+            )}
+            
+            {error && (
+              <div className="bg-red-50 text-red-600 p-3 rounded-xl text-sm font-medium border border-red-100">
+                {error}
+              </div>
+            )}
+
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-2">
+                Email address
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Mail className="h-5 w-5 text-slate-400" />
+                </div>
+                <input
+                  type="email"
+                  required
+                  className="block w-full pl-10 bg-slate-50 border border-slate-200 rounded-xl py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  placeholder="doctor@hospital.com"
+                  value={formData.email}
+                  onChange={(e) => setFormData({...formData, email: e.target.value})}
+                />
+              </div>
             </div>
 
-            <button type="submit" className="w-full bg-[#1E3A8A] hover:bg-blue-900 text-white font-bold py-3.5 rounded-xl transition-colors shadow-lg shadow-blue-900/20 mt-6 text-sm">
-              Log In
-            </button>
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-2">
+                Password
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Lock className="h-5 w-5 text-slate-400" />
+                </div>
+                <input
+                  type="password"
+                  required
+                  className="block w-full pl-10 bg-slate-50 border border-slate-200 rounded-xl py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  placeholder="••••••••"
+                  value={formData.password}
+                  onChange={(e) => setFormData({...formData, password: e.target.value})}
+                />
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <input
+                  id="remember-me"
+                  name="remember-me"
+                  type="checkbox"
+                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-slate-300 rounded"
+                />
+                <label htmlFor="remember-me" className="ml-2 block text-sm text-slate-600">
+                  Remember me
+                </label>
+              </div>
+
+              <div className="text-sm">
+                <a href="#" className="font-bold text-blue-600 hover:text-[#FF6B00]">
+                  Forgot password?
+                </a>
+              </div>
+            </div>
+
+            <div>
+              <button
+                type="submit"
+                className="w-full flex justify-center items-center gap-2 bg-[#FF6B00] hover:bg-[#E56000] text-white font-bold py-3.5 px-4 rounded-xl shadow-lg shadow-orange-500/30 transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#FF6B00]"
+              >
+                Sign in <ArrowRight size={18} />
+              </button>
+            </div>
           </form>
         </div>
-      </main>
+      </div>
     </div>
   );
 };

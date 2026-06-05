@@ -42,24 +42,30 @@ const TopDoctors = () => {
 
       <div className="max-w-7xl mx-auto pl-6">
         <div id="doctors-scroll-container" className="flex gap-6 overflow-x-auto pb-8 snap-x snap-mandatory scrollbar-hide" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-          {doctors.map((doc) => (
-            <div key={doc.id} className="min-w-[300px] max-w-[300px] bg-white rounded-3xl p-6 shadow-xl shadow-slate-200/40 border border-slate-100 snap-start flex-shrink-0 group hover:-translate-y-2 transition-transform duration-300">
-              <div className="relative mb-6">
-                <img src={localStorage.getItem('doctorAvatar') || `https://ui-avatars.com/api/?name=Dr+${doc.user?.full_name}&background=eff6ff&color=1d4ed8&size=150`} alt={doc.user?.full_name} className="w-24 h-24 rounded-2xl object-cover shadow-md mx-auto group-hover:scale-105 transition-transform duration-300" />
-                <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-white px-3 py-1 rounded-full shadow-md text-xs font-bold text-slate-700 flex items-center gap-1">
-                  <Star size={12} className="text-yellow-400 fill-yellow-400" /> 4.9
+          {Array.isArray(doctors) && doctors.length > 0 ? (
+            doctors.map((doc) => (
+              <div key={doc.id} className="min-w-[300px] max-w-[300px] bg-white rounded-3xl p-6 shadow-xl shadow-slate-200/40 border border-slate-100 snap-start flex-shrink-0 group hover:-translate-y-2 transition-transform duration-300">
+                <div className="relative mb-6">
+                  <img src={localStorage.getItem('doctorAvatar') || `https://ui-avatars.com/api/?name=Dr+${doc.user?.full_name}&background=eff6ff&color=1d4ed8&size=150`} alt={doc.user?.full_name} className="w-24 h-24 rounded-2xl object-cover shadow-md mx-auto group-hover:scale-105 transition-transform duration-300" />
+                  <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-white px-3 py-1 rounded-full shadow-md text-xs font-bold text-slate-700 flex items-center gap-1">
+                    <Star size={12} className="text-yellow-400 fill-yellow-400" /> 4.9
+                  </div>
+                </div>
+                <div className="text-center">
+                  <h3 className="text-xl font-bold text-slate-800 mb-1">Dr. {doc.user?.full_name}</h3>
+                  <p className="text-blue-600 font-semibold mb-4">{doc.specialty}</p>
+                  <p className="text-slate-500 text-sm mb-6 line-clamp-2">{doc.bio || "Dedicated professional providing top quality healthcare services."}</p>
+                  <button onClick={() => navigate('/login')} className="w-full bg-slate-50 hover:bg-blue-600 hover:text-white text-slate-700 font-bold py-3 rounded-xl transition-colors">
+                    Book Appointment
+                  </button>
                 </div>
               </div>
-              <div className="text-center">
-                <h3 className="text-xl font-bold text-slate-800 mb-1">Dr. {doc.user?.full_name}</h3>
-                <p className="text-blue-600 font-semibold mb-4">{doc.specialty}</p>
-                <p className="text-slate-500 text-sm mb-6 line-clamp-2">{doc.bio || "Dedicated professional providing top quality healthcare services."}</p>
-                <button onClick={() => navigate('/login')} className="w-full bg-slate-50 hover:bg-blue-600 hover:text-white text-slate-700 font-bold py-3 rounded-xl transition-colors">
-                  Book Appointment
-                </button>
-              </div>
+            ))
+          ) : (
+            <div className="w-full text-center py-10 text-slate-500 font-medium">
+              No doctors available at the moment. Please check back later.
             </div>
-          ))}
+          )}
           {/* Empty space block for scroll padding */}
           <div className="min-w-[24px] flex-shrink-0"></div>
         </div>

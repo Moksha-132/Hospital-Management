@@ -1,110 +1,120 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { HeartPulse } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { Stethoscope, CalendarCheck, ShieldCheck, HeartPulse, Hospital, Pill } from 'lucide-react';
+
+const featureList = [
+  {
+    icon: <CalendarCheck className="w-8 h-8 text-[#FF6B00]" />,
+    title: "Smart Scheduling",
+    description: "Book, approve, or reject slots easily. Automated rollback for rejected appointments.",
+  },
+  {
+    icon: <HeartPulse className="w-8 h-8 text-blue-600" />,
+    title: "Telemedicine Built-in",
+    description: "Secure video and audio calls integrated directly within the platform for remote care.",
+  },
+  {
+    icon: <Stethoscope className="w-8 h-8 text-emerald-500" />,
+    title: "Digital Prescriptions",
+    description: "Doctors can upload prescriptions seamlessly with instant email notifications.",
+  },
+  {
+    icon: <ShieldCheck className="w-8 h-8 text-purple-600" />,
+    title: "Secure Data Management",
+    description: "Patient records, uploaded files, and profiles managed with top-tier security.",
+  },
+  {
+    icon: <Hospital className="w-8 h-8 text-[#FF6B00]" />,
+    title: "Hospital Admin Panel",
+    description: "Comprehensive admin dashboard to manage total patients and facility workflow.",
+  },
+  {
+    icon: <Pill className="w-8 h-8 text-blue-600" />,
+    title: "Inventory & Pharmacy",
+    description: "Manage medical inventory, process patient medicine orders, and integrate payments.",
+  }
+];
 
 const Services = () => {
   return (
-    <section id="services" className="py-24 bg-[#FAFBFC] relative overflow-hidden font-sans">
+    <section id="services" className="py-24 bg-white relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          
-          {/* Left Text Content */}
-          <div className="pr-4">
-            <motion.h2 
-              initial={{ opacity: 0, y: -20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-4xl md:text-5xl font-black text-[#1E3A8A] mb-8 tracking-tight leading-tight"
-            >
+        
+        <div className="flex flex-col lg:flex-row gap-16 mb-20 items-center">
+          {/* About Text */}
+          <div className="w-full lg:w-1/2">
+            <h2 className="text-4xl lg:text-5xl font-extrabold text-[#1E3A8A] mb-6">
               About Our <span className="text-blue-500">Services</span>
-            </motion.h2>
-            
-            <motion.p 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-              className="text-[#6B7280] leading-relaxed mb-6 text-[15px]"
-            >
-              The art of medicine is founded upon the hospital ecosystem. We are obsessed with helping patients navigate complex procedures so they never have to worry about scheduling, offering an automated digital specialty experience.
-            </motion.p>
-            
-            <motion.p 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-              className="text-[#6B7280] leading-relaxed mb-10 text-[15px]"
-            >
-              Improve medication adherence and simplify prescribing workflows. Our unified hospital management system ensures that your medical inventory, patient appointments, and financial transactions are handled within a single, secure environment.
-            </motion.p>
-            
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.3 }}
-            >
-              <Link to="/contact">
-                <button className="bg-[#FF6B00] hover:bg-[#e65c00] text-white font-bold px-8 py-3.5 rounded-xl shadow-[0_8px_20px_rgba(255,107,0,0.3)] transition-all">
-                  Contact With Us
-                </button>
-              </Link>
-            </motion.div>
+            </h2>
+            <p className="text-slate-600 leading-relaxed mb-6">
+              The art of medicine is founded upon the hospital ecosystem. We are obsessed with 
+              helping patients navigate complex procedures so they never have to worry about scheduling, 
+              offering an automated digital specialty experience. 
+            </p>
+            <p className="text-slate-600 leading-relaxed mb-8">
+              Improve medication adherence and simplify prescribing workflows. Our unified hospital management 
+              system ensures that your medical inventory, patient appointments, and financial transactions 
+              are handled within a single, secure environment.
+            </p>
+            <Link to="/contact">
+              <button className="bg-[#FF6B00] hover:bg-[#E56000] text-white font-bold px-8 py-3.5 rounded-lg shadow-md transition-colors">
+                Contact With Us
+              </button>
+            </Link>
           </div>
-
-          {/* Right Image Grid */}
-          <div className="relative h-[450px] flex gap-5">
-            {/* Left Tall Image */}
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="w-[45%] h-full rounded-3xl overflow-hidden shadow-xl shadow-slate-200/60"
-            >
-              <img 
-                src="https://images.unsplash.com/photo-1581594693702-fbdc51b2763b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                alt="Doctor preparing for surgery" 
-                className="w-full h-full object-cover"
-              />
-            </motion.div>
-            
-            {/* Right Column (Image + Card) */}
-            <div className="w-[55%] flex flex-col gap-5">
-              <motion.div 
-                initial={{ opacity: 0, x: 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                className="h-[65%] rounded-3xl overflow-hidden shadow-xl shadow-slate-200/60"
-              >
-                <img 
-                  src="https://images.unsplash.com/photo-1551076805-e1869043e560?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                  alt="Surgeons in operating room" 
-                  className="w-full h-full object-cover"
-                />
-              </motion.div>
-              
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.4 }}
-                className="h-[35%] bg-white border border-blue-50 rounded-3xl p-5 flex items-center gap-4 shadow-[0_8px_30px_rgb(0,0,0,0.06)]"
-              >
-                <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white shrink-0 shadow-md">
-                  <HeartPulse size={24} />
+          
+          {/* Image Grid */}
+          <div className="w-full lg:w-1/2 relative">
+            <div className="grid grid-cols-2 gap-4">
+              <img src="https://images.unsplash.com/photo-1514416432279-50fac261c7dd?q=80&w=1000&auto=format&fit=crop" alt="Doctor team" className="rounded-2xl w-full h-64 object-cover shadow-lg" />
+              <div className="flex flex-col gap-4">
+                <img src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=1000&auto=format&fit=crop" alt="Medical facility" className="rounded-2xl w-full h-32 object-cover shadow-lg" />
+                <div className="bg-blue-50 rounded-2xl p-4 shadow-sm border border-blue-100 flex items-center gap-3">
+                  <div className="bg-blue-600 p-2 rounded-full text-white">
+                    <HeartPulse size={20} />
+                  </div>
+                  <div>
+                    <h5 className="font-bold text-[#1E3A8A] text-sm">24/7 Emergency</h5>
+                    <p className="text-[10px] text-slate-500">Emergency protocols always ready.</p>
+                  </div>
                 </div>
-                <div>
-                  <h4 className="font-bold text-[#1E3A8A] text-sm mb-0.5">24/7 Emergency</h4>
-                  <p className="text-[11px] text-slate-500 leading-snug">Emergency protocols always ready.</p>
-                </div>
-              </motion.div>
+              </div>
             </div>
           </div>
+        </div>
 
+        <div className="text-center max-w-3xl mx-auto mb-16">
+          <h2 className="text-3xl md:text-4xl font-extrabold text-[#1E3A8A] mb-4">
+            Specialist Doctor <span className="text-blue-500">Advanced Services</span>
+          </h2>
+          <p className="text-slate-600 text-sm">
+            Everything you need to seamlessly manage your medical institution, from telemedicine to inventory tracking.
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {featureList.map((feature, index) => (
+            <motion.div 
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              className="p-8 rounded-2xl bg-white border border-slate-100 shadow-xl shadow-slate-200/50 hover:-translate-y-2 transition-transform duration-300"
+            >
+              <div className="mb-6">
+                {feature.icon}
+              </div>
+              <h4 className="text-xl font-bold text-[#1E3A8A] mb-3">{feature.title}</h4>
+              <p className="text-slate-500 text-sm leading-relaxed">
+                {feature.description}
+              </p>
+              <Link to="/register" className="mt-6 inline-flex items-center gap-2 text-blue-600 font-bold text-sm cursor-pointer hover:text-[#FF6B00] transition-colors">
+                Get Started <span className="text-lg leading-none">&rarr;</span>
+              </Link>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>

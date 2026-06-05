@@ -1,156 +1,202 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Activity, User, Shield } from 'lucide-react';
+import { Mail, Lock, User, Phone, Activity, ArrowRight, ShieldCheck } from 'lucide-react';
 
 const Register = () => {
   const navigate = useNavigate();
-  const [role, setRole] = useState('patient');
   const [formData, setFormData] = useState({
-    full_name: '',
+    fullName: '',
     email: '',
     phone: '',
-    password: ''
+    password: '',
+    role: 'patient'
   });
-  const [success, setSuccess] = useState(false);
+
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
+    setSuccess('');
+    
     try {
-      const res = await fetch(`http://127.0.0.1:8000/auth/register`, {
+      const response = await fetch('http://localhost:8000/auth/register', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...formData, role: role.toUpperCase() })
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          full_name: formData.fullName,
+          phone: formData.phone || null,
+          password: formData.password,
+          role: formData.role
+        }),
       });
-      if (res.ok) {
-        setSuccess(true);
-        setTimeout(() => navigate('/login'), 2000);
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setFormData({ fullName: '', email: '', phone: '', password: '', role: 'patient' });
+        navigate('/login', { state: { message: 'Account created successfully! You can now log in.' } });
       } else {
-        const data = await res.json();
-        setError(data.detail || "Registration failed");
+        setError(data.detail || 'Registration failed');
       }
     } catch (err) {
-      setError("Network error");
+      setError('Network error. Is the backend running?');
     }
   };
 
   return (
-    <div className="min-h-screen bg-white flex flex-col font-sans">
-      {/* Navbar (from Screenshot 2) */}
-      <nav className="bg-white px-8 py-4 flex justify-between items-center shadow-sm">
-        <Link to="/" className="flex items-center gap-2 text-blue-600 font-bold text-2xl tracking-tight">
-          <div className="bg-blue-600 text-white p-1 rounded-md"><Activity size={24} /></div> Medicare
-        </Link>
-        <div className="hidden md:flex items-center gap-8 text-sm font-bold text-gray-600">
-          <Link to="/" className="hover:text-blue-600">Home</Link>
-          <Link to="/how-it-works" className="hover:text-blue-600">How It Works</Link>
-          <Link to="/services" className="hover:text-blue-600">Services</Link>
-          <Link to="/about" className="hover:text-blue-600">About</Link>
-          <Link to="/contact" className="hover:text-blue-600">Contact</Link>
-        </div>
-        <div className="flex items-center gap-4 text-sm font-bold">
-          <Link to="/login" className="text-gray-700 hover:text-blue-600">Log In</Link>
-          <Link to="/register" className="bg-[#FF6B00] hover:bg-[#e65c00] text-white px-6 py-2.5 rounded-full transition-colors shadow-md shadow-orange-500/20">
-            Get Started
-          </Link>
-        </div>
-      </nav>
-
-      <main className="flex-1 flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-extrabold text-[#1E3A8A] mb-2 tracking-tight">Create an account</h1>
-          <p className="text-sm font-medium text-gray-500">
-            Already have an account? <Link to="/login" className="text-blue-600 hover:underline">Log in here</Link>
-          </p>
-        </div>
-
-        <div className="w-full max-w-md bg-white rounded-3xl p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100">
-          
-          {success && (
-            <div className="bg-green-50 text-green-700 p-4 rounded-xl text-sm font-bold mb-6 text-center border border-green-100">
-              Account created successfully! You can now log in.
-            </div>
-          )}
-
-          {error && (
-            <div className="bg-red-50 text-red-600 p-4 rounded-xl text-sm font-bold mb-6 text-center border border-red-100">
-              {error}
-            </div>
-          )}
-
-          <div className="flex gap-4 mb-8">
-            <button 
-              type="button"
-              onClick={() => setRole('patient')}
-              className={`flex-1 flex flex-col items-center justify-center py-4 rounded-xl border-2 transition-all ${role === 'patient' ? 'border-blue-600 bg-blue-50 text-blue-600' : 'border-gray-100 bg-white text-gray-500 hover:border-gray-200'}`}
-            >
-              <User size={24} className="mb-2" />
-              <span className="font-bold text-sm">Patient</span>
-            </button>
-            <button 
-              type="button"
-              onClick={() => setRole('doctor')}
-              className={`flex-1 flex flex-col items-center justify-center py-4 rounded-xl border-2 transition-all ${role === 'doctor' ? 'border-blue-600 bg-blue-50 text-blue-600' : 'border-gray-100 bg-white text-gray-500 hover:border-gray-200'}`}
-            >
-              <Shield size={24} className="mb-2" />
-              <span className="font-bold text-sm">Doctor</span>
-            </button>
+    <div className="min-h-screen bg-slate-50 flex flex-col justify-center pt-32 pb-12 sm:px-6 lg:px-8">
+      <div className="sm:mx-auto sm:w-full sm:max-w-md">
+        <div className="flex justify-center">
+          <div className="bg-[#1E3A8A] p-3 rounded-xl text-white shadow-lg shadow-blue-900/20">
+            <Activity size={32} />
           </div>
+        </div>
+        <h2 className="mt-6 text-center text-3xl font-extrabold text-[#1E3A8A]">
+          Create an account
+        </h2>
+        <p className="mt-2 text-center text-sm text-slate-600">
+          Already have an account?{' '}
+          <Link to="/login" className="font-bold text-blue-600 hover:text-[#FF6B00] transition-colors">
+            Log in here
+          </Link>
+        </p>
+      </div>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
-            <div>
-              <label className="block text-xs font-bold text-gray-700 mb-1">Full Name</label>
-              <input 
-                type="text" 
-                placeholder="John Doe" 
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={formData.full_name}
-                onChange={(e) => setFormData({...formData, full_name: e.target.value})}
-                required
-              />
-            </div>
+      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+        <div className="bg-white py-8 px-4 shadow-xl shadow-slate-200/50 sm:rounded-2xl sm:px-10 border border-slate-100">
+          <form className="space-y-5" onSubmit={handleSubmit}>
             
-            <div>
-              <label className="block text-xs font-bold text-gray-700 mb-1">Email address</label>
-              <input 
-                type="email" 
-                placeholder="you@example.com" 
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={formData.email}
-                onChange={(e) => setFormData({...formData, email: e.target.value})}
-                required
-              />
+            {error && (
+              <div className="bg-red-50 text-red-600 p-3 rounded-xl text-sm font-medium border border-red-100">
+                {error}
+              </div>
+            )}
+            
+            {success && (
+              <div className="bg-emerald-50 text-emerald-600 p-3 rounded-xl text-sm font-medium border border-emerald-100">
+                {success}
+              </div>
+            )}
+
+            {/* Role Selection */}
+            <div className="grid grid-cols-2 gap-4 mb-6">
+              <button
+                type="button"
+                onClick={() => setFormData({...formData, role: 'patient'})}
+                className={`py-3 px-4 rounded-xl text-sm font-bold flex flex-col items-center gap-2 border-2 transition-all ${
+                  formData.role === 'patient' 
+                  ? 'border-blue-600 bg-blue-50 text-blue-700' 
+                  : 'border-slate-100 bg-white text-slate-500 hover:border-slate-200'
+                }`}
+              >
+                <User size={20} />
+                Patient
+              </button>
+              <button
+                type="button"
+                onClick={() => setFormData({...formData, role: 'doctor'})}
+                className={`py-3 px-4 rounded-xl text-sm font-bold flex flex-col items-center gap-2 border-2 transition-all ${
+                  formData.role === 'doctor' 
+                  ? 'border-[#FF6B00] bg-orange-50 text-[#FF6B00]' 
+                  : 'border-slate-100 bg-white text-slate-500 hover:border-slate-200'
+                }`}
+              >
+                <ShieldCheck size={20} />
+                Doctor
+              </button>
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-gray-700 mb-1">Phone Number (Optional)</label>
-              <input 
-                type="text" 
-                placeholder="+1 (555) 000-0000" 
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={formData.phone}
-                onChange={(e) => setFormData({...formData, phone: e.target.value})}
-              />
+              <label className="block text-sm font-semibold text-slate-700 mb-2">
+                Full Name
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <User className="h-5 w-5 text-slate-400" />
+                </div>
+                <input
+                  type="text"
+                  required
+                  className="block w-full pl-10 bg-slate-50 border border-slate-200 rounded-xl py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  placeholder="John Doe"
+                  value={formData.fullName}
+                  onChange={(e) => setFormData({...formData, fullName: e.target.value})}
+                />
+              </div>
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-gray-700 mb-1">Password</label>
-              <input 
-                type="password" 
-                placeholder="••••••••" 
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={formData.password}
-                onChange={(e) => setFormData({...formData, password: e.target.value})}
-                required
-              />
+              <label className="block text-sm font-semibold text-slate-700 mb-2">
+                Email address
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Mail className="h-5 w-5 text-slate-400" />
+                </div>
+                <input
+                  type="email"
+                  required
+                  className="block w-full pl-10 bg-slate-50 border border-slate-200 rounded-xl py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  placeholder="you@example.com"
+                  value={formData.email}
+                  onChange={(e) => setFormData({...formData, email: e.target.value})}
+                />
+              </div>
             </div>
 
-            <button type="submit" className="w-full bg-[#1E3A8A] hover:bg-blue-900 text-white font-bold py-3.5 rounded-xl transition-colors shadow-lg shadow-blue-900/20 mt-6 text-sm">
-              Create Account
-            </button>
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-2">
+                Phone Number (Optional)
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Phone className="h-5 w-5 text-slate-400" />
+                </div>
+                <input
+                  type="tel"
+                  className="block w-full pl-10 bg-slate-50 border border-slate-200 rounded-xl py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  placeholder="+1 (555) 000-0000"
+                  value={formData.phone}
+                  onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-2">
+                Password
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Lock className="h-5 w-5 text-slate-400" />
+                </div>
+                <input
+                  type="password"
+                  required
+                  className="block w-full pl-10 bg-slate-50 border border-slate-200 rounded-xl py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  placeholder="••••••••"
+                  value={formData.password}
+                  onChange={(e) => setFormData({...formData, password: e.target.value})}
+                />
+              </div>
+            </div>
+
+            <div className="pt-2">
+              <button
+                type="submit"
+                className="w-full flex justify-center items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg shadow-blue-500/30 transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              >
+                Create Account <ArrowRight size={18} />
+              </button>
+            </div>
           </form>
         </div>
-      </main>
+      </div>
     </div>
   );
 };
