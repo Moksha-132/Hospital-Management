@@ -106,7 +106,7 @@ const Hero = () => {
               />
 
               {/* Floating Cards next to Doctor */}
-              <div className="absolute top-20 -right-8 bg-white/90 backdrop-blur-sm p-4 rounded-2xl shadow-xl z-20 flex flex-col items-center">
+              <div className="absolute top-4 right-0 md:top-20 md:-right-8 bg-white/90 backdrop-blur-sm p-4 rounded-2xl shadow-xl z-20 flex flex-col items-center">
                 <div className="bg-blue-100 p-2 rounded-lg mb-2">
                   <img src="https://images.unsplash.com/photo-1584982751601-97dcc096659c?q=80&w=100&auto=format&fit=crop" alt="Stethoscope" className="w-10 h-10 rounded-full object-cover" />
                 </div>
@@ -114,7 +114,7 @@ const Hero = () => {
                 <span className="text-[10px] text-slate-500">Get an appointment</span>
               </div>
 
-              <div className="absolute bottom-32 -left-12 bg-white/90 backdrop-blur-sm p-5 rounded-2xl shadow-xl z-20 w-48">
+              <div className="absolute bottom-4 left-0 md:bottom-32 md:-left-12 bg-white/90 backdrop-blur-sm p-5 rounded-2xl shadow-xl z-20 w-48">
                 <div className="flex justify-between items-start mb-3">
                   <div className="bg-blue-100 p-2 rounded-lg text-blue-600">
                     <Video size={20} />

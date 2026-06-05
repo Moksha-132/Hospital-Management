@@ -9,7 +9,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
           
           {/* Logo & Description */}
-          <div className="space-y-6">
+          <div className="space-y-6 lg:col-span-1">
             <Link to="/" className="flex items-center gap-2 text-white font-bold text-2xl tracking-tight">
               <div className="bg-white text-[#1e3a8a] p-1 rounded-md"><Activity size={24} /></div> Medicare
             </Link>
@@ -18,32 +18,35 @@ const Footer = () => {
             </p>
           </div>
 
-          {/* Quick Links */}
-          <div>
-            <h3 className="font-bold text-lg mb-6 text-white">Quick Links</h3>
-            <ul className="space-y-3 text-blue-200 text-sm font-medium">
-              <li><Link to="/" className="hover:text-white transition-colors">Home</Link></li>
-              <li><Link to="/how-it-works" className="hover:text-white transition-colors">How It Works</Link></li>
-              <li><Link to="/services" className="hover:text-white transition-colors">Services</Link></li>
-              <li><Link to="/about" className="hover:text-white transition-colors">About Us</Link></li>
-              <li><Link to="/contact" className="hover:text-white transition-colors">Contact</Link></li>
-            </ul>
-          </div>
+          {/* Links Section (2 columns on mobile) */}
+          <div className="grid grid-cols-2 gap-8 md:col-span-1 lg:col-span-2">
+            {/* Quick Links */}
+            <div>
+              <h3 className="font-bold text-lg mb-6 text-white">Quick Links</h3>
+              <ul className="space-y-3 text-blue-200 text-sm font-medium">
+                <li><Link to="/" className="hover:text-white transition-colors">Home</Link></li>
+                <li><Link to="/how-it-works" className="hover:text-white transition-colors">How It Works</Link></li>
+                <li><Link to="/services" className="hover:text-white transition-colors">Services</Link></li>
+                <li><Link to="/about" className="hover:text-white transition-colors">About Us</Link></li>
+                <li><Link to="/contact" className="hover:text-white transition-colors">Contact</Link></li>
+              </ul>
+            </div>
 
-          {/* Our Services */}
-          <div>
-            <h3 className="font-bold text-lg mb-6 text-white">Our Services</h3>
-            <ul className="space-y-3 text-blue-200 text-sm font-medium">
-              <li><Link to="#" className="hover:text-white transition-colors">Doctor Consultations</Link></li>
-              <li><Link to="#" className="hover:text-white transition-colors">Digital Prescriptions</Link></li>
-              <li><Link to="#" className="hover:text-white transition-colors">Pharmacy & Inventory</Link></li>
-              <li><Link to="#" className="hover:text-white transition-colors">Secure Patient Portal</Link></li>
-              <li><Link to="#" className="hover:text-white transition-colors">Hospital Administration</Link></li>
-            </ul>
+            {/* Our Services */}
+            <div>
+              <h3 className="font-bold text-lg mb-6 text-white">Our Services</h3>
+              <ul className="space-y-3 text-blue-200 text-sm font-medium">
+                <li><Link to="#" className="hover:text-white transition-colors">Doctor Consultations</Link></li>
+                <li><Link to="#" className="hover:text-white transition-colors">Digital Prescriptions</Link></li>
+                <li><Link to="#" className="hover:text-white transition-colors">Pharmacy & Inventory</Link></li>
+                <li><Link to="#" className="hover:text-white transition-colors">Secure Patient Portal</Link></li>
+                <li><Link to="#" className="hover:text-white transition-colors">Hospital Administration</Link></li>
+              </ul>
+            </div>
           </div>
 
           {/* Contact Us */}
-          <div>
+          <div className="lg:col-span-1">
             <h3 className="font-bold text-lg mb-6 text-white">Contact Us</h3>
             <ul className="space-y-4 text-blue-200 text-sm font-medium">
               <li className="flex items-start gap-3">
