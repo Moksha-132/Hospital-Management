@@ -33,12 +33,12 @@ const Navbar = () => {
         <div className="flex justify-between items-center h-20">
           
           {/* Logo */}
-          <div className="flex items-center gap-2">
-            <div className="bg-blue-600 p-2 rounded-lg text-white">
-              <Activity size={24} />
+          <div className="flex items-center gap-1.5 md:gap-2">
+            <div className="bg-blue-600 p-1.5 md:p-2 rounded-lg text-white flex items-center justify-center">
+              <Activity className="w-5 h-5 md:w-6 md:h-6" />
             </div>
             <div className="flex flex-col">
-              <Link to="/" className="font-bold text-2xl tracking-tight text-blue-900 leading-none">Medicare</Link>
+              <Link to="/" className="font-bold text-lg md:text-2xl tracking-tight text-blue-900 leading-none">Medicare</Link>
             </div>
           </div>
 
