@@ -1,23 +1,36 @@
 import React from 'react';
 import { User, UserCheck, Shield } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const HowItWorks = () => {
   return (
     <section id="how-it-works" className="py-24 bg-slate-50 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        <div className="text-center max-w-3xl mx-auto mb-20">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.6 }}
+          className="text-center max-w-3xl mx-auto mb-20"
+        >
           <h2 className="text-blue-600 font-bold uppercase tracking-widest text-sm mb-3">How It Works</h2>
           <h3 className="text-4xl md:text-5xl font-extrabold text-[#1E3A8A] mb-6">A unified ecosystem for everyone</h3>
           <p className="text-lg text-slate-600">
             Our platform simplifies the healthcare journey by providing tailored workflows for patients and doctors. Here's how each role interacts with the system.
           </p>
-        </div>
+        </motion.div>
 
         <div className="grid lg:grid-cols-2 gap-12 max-w-5xl mx-auto">
           
           {/* Patients Workflow */}
-          <div className="bg-white rounded-3xl p-8 shadow-xl shadow-slate-200/50 relative border-t-4 border-blue-500">
+          <motion.div 
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="bg-white rounded-3xl p-8 shadow-xl shadow-slate-200/50 relative border-t-4 border-blue-500"
+          >
             <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mb-8 absolute -top-8 left-8 shadow-lg">
               <User size={32} className="text-blue-600" />
             </div>
@@ -45,10 +58,16 @@ const HowItWorks = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* Doctors Workflow */}
-          <div className="bg-white rounded-3xl p-8 shadow-xl shadow-slate-200/50 relative border-t-4 border-[#CC5200]">
+          <motion.div 
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="bg-white rounded-3xl p-8 shadow-xl shadow-slate-200/50 relative border-t-4 border-[#CC5200]"
+          >
             <div className="w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center mb-8 absolute -top-8 left-8 shadow-lg">
               <UserCheck size={32} className="text-[#CC5200]" />
             </div>
@@ -76,7 +95,7 @@ const HowItWorks = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
 
         </div>
       </div>

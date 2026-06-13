@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Star, ChevronRight, ChevronLeft } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 
 const TopDoctors = () => {
@@ -24,12 +25,17 @@ const TopDoctors = () => {
   return (
     <section className="py-24 bg-slate-50 overflow-hidden relative">
       <div className="max-w-7xl mx-auto px-6 mb-12 flex justify-between items-end">
-        <div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.6 }}
+        >
           <span className="text-blue-600 font-bold tracking-wider text-sm uppercase mb-2 block">Top Specialists</span>
           <h2 className="text-4xl md:text-5xl font-extrabold text-slate-800">
             Meet Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Doctors</span>
           </h2>
-        </div>
+        </motion.div>
         <div className="flex gap-2">
           <button onClick={scrollLeft} aria-label="Scroll left" className="w-12 h-12 rounded-full border border-slate-200 bg-white flex items-center justify-center text-slate-600 hover:bg-blue-50 hover:text-blue-600 transition-colors shadow-sm">
             <ChevronLeft size={24} />
@@ -43,8 +49,15 @@ const TopDoctors = () => {
       <div className="max-w-7xl mx-auto pl-6">
         <div id="doctors-scroll-container" className="flex gap-6 overflow-x-auto pb-8 snap-x snap-mandatory scrollbar-hide" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
           {Array.isArray(doctors) && doctors.length > 0 ? (
-            doctors.map((doc) => (
-              <div key={doc.id} className="min-w-[300px] max-w-[300px] bg-white rounded-3xl p-6 shadow-xl shadow-slate-200/40 border border-slate-100 snap-start flex-shrink-0 group hover:-translate-y-2 transition-transform duration-300">
+            doctors.map((doc, index) => (
+              <motion.div 
+                key={doc.id} 
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="min-w-[300px] max-w-[300px] bg-white rounded-3xl p-6 shadow-xl shadow-slate-200/40 border border-slate-100 snap-start flex-shrink-0 group hover:-translate-y-2 transition-transform duration-300"
+              >
                 <div className="relative mb-6">
                   <img 
                     src={`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/uploads/doctor_${doc.id}_avatar_doc.jpg`} 
@@ -64,7 +77,7 @@ const TopDoctors = () => {
                     Book Appointment
                   </button>
                 </div>
-              </div>
+              </motion.div>
             ))
           ) : (
             <div className="w-full text-center py-10 text-slate-600 font-medium">

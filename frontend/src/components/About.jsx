@@ -1,22 +1,35 @@
 import React from 'react';
 import { Target, Lightbulb, CheckCircle2 } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const About = () => {
   return (
     <section id="about" className="py-24 bg-slate-50 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.6 }}
+          className="text-center max-w-3xl mx-auto mb-16"
+        >
           <h2 className="text-blue-600 font-bold uppercase tracking-widest text-sm mb-3">About Us</h2>
           <h3 className="text-4xl md:text-5xl font-extrabold text-[#1E3A8A] mb-6">Our Vision & Mission</h3>
           <p className="text-lg text-slate-600">
             We started Medicare to fix the broken administrative processes in modern hospitals. Our goal is to make receiving care seamless for patients and providing care effortless for doctors.
           </p>
-        </div>
+        </motion.div>
 
         <div className="grid md:grid-cols-2 gap-12 items-stretch">
 
-          <div className="bg-white p-10 rounded-3xl shadow-xl shadow-slate-200/50 border-t-4 border-[#CC5200] relative overflow-hidden group hover:-translate-y-1 transition-transform duration-300">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.5 }}
+            className="bg-white p-10 rounded-3xl shadow-xl shadow-slate-200/50 border-t-4 border-[#CC5200] relative overflow-hidden group hover:-translate-y-1 transition-transform duration-300"
+          >
             <div className="absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 bg-orange-50 rounded-full transition-transform group-hover:scale-150 duration-500 ease-in-out"></div>
             <div className="relative z-10">
               <div className="w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center mb-8 text-[#CC5200]">
@@ -38,9 +51,15 @@ const About = () => {
                 </li>
               </ul>
             </div>
-          </div>
+          </motion.div>
 
-          <div className="bg-[#1E3A8A] p-10 rounded-3xl shadow-xl shadow-blue-900/20 relative overflow-hidden group hover:-translate-y-1 transition-transform duration-300">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="bg-[#1E3A8A] p-10 rounded-3xl shadow-xl shadow-blue-900/20 relative overflow-hidden group hover:-translate-y-1 transition-transform duration-300"
+          >
             <div className="absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 bg-blue-800 rounded-full transition-transform group-hover:scale-150 duration-500 ease-in-out"></div>
             <div className="relative z-10">
               <div className="w-16 h-16 bg-blue-800 rounded-2xl flex items-center justify-center mb-8 text-white">
@@ -56,7 +75,7 @@ const About = () => {
                 </p>
               </div>
             </div>
-          </div>
+          </motion.div>
 
         </div>
 
