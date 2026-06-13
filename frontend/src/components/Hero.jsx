@@ -42,7 +42,7 @@ const Hero = () => {
               
               <div className="flex flex-col sm:flex-row gap-4 mb-12">
                 <Link to="/register">
-                  <button className="bg-[#FF6B00] hover:bg-[#E56000] text-white font-bold px-8 py-4 rounded-xl shadow-lg shadow-orange-500/30 transition-all transform hover:-translate-y-1">
+                  <button className="bg-[#CC5200] hover:bg-[#A34200] text-white font-bold px-8 py-4 rounded-xl shadow-lg shadow-orange-500/30 transition-all transform hover:-translate-y-1">
                     Book Appointment
                   </button>
                 </Link>
@@ -58,7 +58,7 @@ const Hero = () => {
                     <span className="text-2xl font-black text-center">{ratingStats.average}</span>
                   </div>
                   <div>
-                    <h4 className="font-bold text-lg">Average Doctor Rating</h4>
+                    <h2 className="font-bold text-lg">Average Doctor Rating</h2>
                     <p className="text-blue-200 text-sm">Based on {ratingStats.total} patient reviews</p>
                   </div>
                 </div>
@@ -102,7 +102,7 @@ const Hero = () => {
               <img 
                 src="https://i.pinimg.com/736x/ff/7b/ec/ff7bece704277092692f264ba0e511ff.jpg" 
                 alt="Hospital Facility" 
-                className="relative z-10 w-full object-cover object-top rounded-b-none rounded-t-[100px] border-b-8 border-[#FF6B00] shadow-2xl h-[500px]"
+                className="relative z-10 w-full object-cover object-top rounded-b-none rounded-t-[100px] border-b-8 border-[#CC5200] shadow-2xl h-[500px]"
               />
 
               {/* Floating Cards next to Doctor */}
@@ -111,7 +111,7 @@ const Hero = () => {
                   <img src="https://images.unsplash.com/photo-1584982751601-97dcc096659c?q=80&w=100&auto=format&fit=crop" alt="Stethoscope" className="w-10 h-10 rounded-full object-cover" />
                 </div>
                 <span className="text-xs font-bold text-slate-800">Contact</span>
-                <span className="text-[10px] text-slate-500">Get an appointment</span>
+                <span className="text-[10px] text-slate-600">Get an appointment</span>
               </div>
 
               <div className="absolute bottom-4 left-0 md:bottom-32 md:-left-12 bg-white/90 backdrop-blur-sm p-5 rounded-2xl shadow-xl z-20 w-48">
@@ -119,10 +119,10 @@ const Hero = () => {
                   <div className="bg-blue-100 p-2 rounded-lg text-blue-600">
                     <Video size={20} />
                   </div>
-                  <span className="text-[10px] font-bold text-[#FF6B00] bg-orange-100 px-2 py-1 rounded-full border border-orange-200">LIVE</span>
+                  <span className="text-[10px] font-bold text-[#CC5200] bg-orange-100 px-2 py-1 rounded-full border border-orange-200">LIVE</span>
                 </div>
-                <h4 className="font-bold text-sm text-slate-900 mb-1">Virtual Consultation</h4>
-                <p className="text-[10px] text-slate-500 mb-3">Timely reach secure consultations with top-tier specialists.</p>
+                <h2 className="font-bold text-sm text-slate-900 mb-1">Virtual Consultation</h2>
+                <p className="text-[10px] text-slate-600 mb-3">Timely reach secure consultations with top-tier specialists.</p>
                 <Link to="/register">
                   <button className="w-full bg-[#1E40AF] text-white text-[10px] font-bold py-2 rounded-lg hover:bg-blue-800 transition-colors">
                     Book Now

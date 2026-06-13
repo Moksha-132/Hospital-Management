@@ -4,7 +4,7 @@ import { Activity, MapPin, Phone, Mail } from 'lucide-react';
 
 const Footer = () => {
   return (
-    <footer className="bg-[#1e3a8a] text-white pt-16 pb-8 border-t-4 border-[#FF6B00]">
+    <footer className="bg-[#1e3a8a] text-white pt-16 pb-8 border-t-4 border-[#CC5200]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
           
@@ -50,15 +50,15 @@ const Footer = () => {
             <h3 className="font-bold text-lg mb-6 text-white">Contact Us</h3>
             <ul className="space-y-4 text-blue-200 text-sm font-medium">
               <li className="flex items-start gap-3">
-                <MapPin size={18} className="text-[#FF6B00] shrink-0 mt-0.5" />
+                <MapPin size={18} className="text-[#CC5200] shrink-0 mt-0.5" />
                 <span>Anantapur, Andhra Pradesh,<br/>India</span>
               </li>
               <li className="flex items-center gap-3">
-                <Phone size={18} className="text-[#FF6B00] shrink-0" />
+                <Phone size={18} className="text-[#CC5200] shrink-0" />
                 <span>+1 (800) 123-4567</span>
               </li>
               <li className="flex items-center gap-3">
-                <Mail size={18} className="text-[#FF6B00] shrink-0" />
+                <Mail size={18} className="text-[#CC5200] shrink-0" />
                 <span>lmoksha.132@gmail.com</span>
               </li>
             </ul>

@@ -16,10 +16,10 @@ const About = () => {
 
         <div className="grid md:grid-cols-2 gap-12 items-stretch">
 
-          <div className="bg-white p-10 rounded-3xl shadow-xl shadow-slate-200/50 border-t-4 border-[#FF6B00] relative overflow-hidden group hover:-translate-y-1 transition-transform duration-300">
+          <div className="bg-white p-10 rounded-3xl shadow-xl shadow-slate-200/50 border-t-4 border-[#CC5200] relative overflow-hidden group hover:-translate-y-1 transition-transform duration-300">
             <div className="absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 bg-orange-50 rounded-full transition-transform group-hover:scale-150 duration-500 ease-in-out"></div>
             <div className="relative z-10">
-              <div className="w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center mb-8 text-[#FF6B00]">
+              <div className="w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center mb-8 text-[#CC5200]">
                 <Target size={32} />
               </div>
               <h4 className="text-2xl font-bold text-[#1E3A8A] mb-4">Our Mission</h4>
@@ -28,13 +28,13 @@ const About = () => {
               </p>
               <ul className="space-y-3">
                 <li className="flex items-center gap-3 text-sm text-slate-700 font-medium">
-                  <CheckCircle2 className="text-[#FF6B00]" size={18} /> Better patient experience
+                  <CheckCircle2 className="text-[#CC5200]" size={18} /> Better patient experience
                 </li>
                 <li className="flex items-center gap-3 text-sm text-slate-700 font-medium">
-                  <CheckCircle2 className="text-[#FF6B00]" size={18} /> Smart hospital inventory
+                  <CheckCircle2 className="text-[#CC5200]" size={18} /> Smart hospital inventory
                 </li>
                 <li className="flex items-center gap-3 text-sm text-slate-700 font-medium">
-                  <CheckCircle2 className="text-[#FF6B00]" size={18} /> Rock-solid data security
+                  <CheckCircle2 className="text-[#CC5200]" size={18} /> Rock-solid data security
                 </li>
               </ul>
             </div>

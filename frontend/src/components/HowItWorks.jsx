@@ -27,52 +27,52 @@ const HowItWorks = () => {
                 <div className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold">1</div>
                 <div>
                   <h5 className="font-bold text-slate-800 mb-1">Search & Book</h5>
-                  <p className="text-sm text-slate-500">Find specialist doctors, view available slots, and book instantly via our secure payment gateway.</p>
+                  <p className="text-sm text-slate-600">Find specialist doctors, view available slots, and book instantly via our secure payment gateway.</p>
                 </div>
               </div>
               <div className="flex gap-4">
                 <div className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold">2</div>
                 <div>
                   <h5 className="font-bold text-slate-800 mb-1">Consult Remotely</h5>
-                  <p className="text-sm text-slate-500">After confirmation, message your doctor directly or join a secure audio/video call.</p>
+                  <p className="text-sm text-slate-600">After confirmation, message your doctor directly or join a secure audio/video call.</p>
                 </div>
               </div>
               <div className="flex gap-4">
                 <div className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold">3</div>
                 <div>
                   <h5 className="font-bold text-slate-800 mb-1">Prescriptions & Pharmacy</h5>
-                  <p className="text-sm text-slate-500">Receive digital prescriptions, upload previous health records, and order medications seamlessly.</p>
+                  <p className="text-sm text-slate-600">Receive digital prescriptions, upload previous health records, and order medications seamlessly.</p>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Doctors Workflow */}
-          <div className="bg-white rounded-3xl p-8 shadow-xl shadow-slate-200/50 relative border-t-4 border-[#FF6B00]">
+          <div className="bg-white rounded-3xl p-8 shadow-xl shadow-slate-200/50 relative border-t-4 border-[#CC5200]">
             <div className="w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center mb-8 absolute -top-8 left-8 shadow-lg">
-              <UserCheck size={32} className="text-[#FF6B00]" />
+              <UserCheck size={32} className="text-[#CC5200]" />
             </div>
             <h4 className="text-2xl font-bold text-[#1E3A8A] mb-6 mt-4">For Doctors</h4>
             <div className="space-y-6">
               <div className="flex gap-4">
-                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-orange-100 text-[#FF6B00] flex items-center justify-center font-bold">1</div>
+                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-orange-100 text-[#CC5200] flex items-center justify-center font-bold">1</div>
                 <div>
                   <h5 className="font-bold text-slate-800 mb-1">Manage Profile & Slots</h5>
-                  <p className="text-sm text-slate-500">Create your professional profile and update your daily availability for patient bookings.</p>
+                  <p className="text-sm text-slate-600">Create your professional profile and update your daily availability for patient bookings.</p>
                 </div>
               </div>
               <div className="flex gap-4">
-                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-orange-100 text-[#FF6B00] flex items-center justify-center font-bold">2</div>
+                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-orange-100 text-[#CC5200] flex items-center justify-center font-bold">2</div>
                 <div>
                   <h5 className="font-bold text-slate-800 mb-1">Approve Appointments</h5>
-                  <p className="text-sm text-slate-500">Review incoming requests. If a slot is rejected, the payment rolls back automatically to the user.</p>
+                  <p className="text-sm text-slate-600">Review incoming requests. If a slot is rejected, the payment rolls back automatically to the user.</p>
                 </div>
               </div>
               <div className="flex gap-4">
-                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-orange-100 text-[#FF6B00] flex items-center justify-center font-bold">3</div>
+                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-orange-100 text-[#CC5200] flex items-center justify-center font-bold">3</div>
                 <div>
                   <h5 className="font-bold text-slate-800 mb-1">Diagnose & Prescribe</h5>
-                  <p className="text-sm text-slate-500">Conduct video consultations, review uploaded files, and issue instant digital prescriptions.</p>
+                  <p className="text-sm text-slate-600">Conduct video consultations, review uploaded files, and issue instant digital prescriptions.</p>
                 </div>
               </div>
             </div>

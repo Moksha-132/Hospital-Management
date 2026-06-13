@@ -31,10 +31,10 @@ const TopDoctors = () => {
           </h2>
         </div>
         <div className="flex gap-2">
-          <button onClick={scrollLeft} className="w-12 h-12 rounded-full border border-slate-200 bg-white flex items-center justify-center text-slate-600 hover:bg-blue-50 hover:text-blue-600 transition-colors shadow-sm">
+          <button onClick={scrollLeft} aria-label="Scroll left" className="w-12 h-12 rounded-full border border-slate-200 bg-white flex items-center justify-center text-slate-600 hover:bg-blue-50 hover:text-blue-600 transition-colors shadow-sm">
             <ChevronLeft size={24} />
           </button>
-          <button onClick={scrollRight} className="w-12 h-12 rounded-full border border-slate-200 bg-white flex items-center justify-center text-slate-600 hover:bg-blue-50 hover:text-blue-600 transition-colors shadow-sm">
+          <button onClick={scrollRight} aria-label="Scroll right" className="w-12 h-12 rounded-full border border-slate-200 bg-white flex items-center justify-center text-slate-600 hover:bg-blue-50 hover:text-blue-600 transition-colors shadow-sm">
             <ChevronRight size={24} />
           </button>
         </div>
@@ -59,7 +59,7 @@ const TopDoctors = () => {
                 <div className="text-center">
                   <h3 className="text-xl font-bold text-slate-800 mb-1">Dr. {doc.user?.full_name}</h3>
                   <p className="text-blue-600 font-semibold mb-4">{doc.specialty}</p>
-                  <p className="text-slate-500 text-sm mb-6 line-clamp-2">{doc.bio || "Dedicated professional providing top quality healthcare services."}</p>
+                  <p className="text-slate-600 text-sm mb-6 line-clamp-2">{doc.bio || "Dedicated professional providing top quality healthcare services."}</p>
                   <button onClick={() => navigate('/login')} className="w-full bg-slate-50 hover:bg-blue-600 hover:text-white text-slate-700 font-bold py-3 rounded-xl transition-colors">
                     Book Appointment
                   </button>
@@ -67,7 +67,7 @@ const TopDoctors = () => {
               </div>
             ))
           ) : (
-            <div className="w-full text-center py-10 text-slate-500 font-medium">
+            <div className="w-full text-center py-10 text-slate-600 font-medium">
               No doctors available at the moment. Please check back later.
             </div>
           )}

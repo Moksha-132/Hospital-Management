@@ -5,7 +5,7 @@ import { Stethoscope, CalendarCheck, ShieldCheck, HeartPulse, Hospital, Pill } f
 
 const featureList = [
   {
-    icon: <CalendarCheck className="w-8 h-8 text-[#FF6B00]" />,
+    icon: <CalendarCheck className="w-8 h-8 text-[#CC5200]" />,
     title: "Smart Scheduling",
     description: "Book, approve, or reject slots easily. Automated rollback for rejected appointments.",
   },
@@ -25,7 +25,7 @@ const featureList = [
     description: "Patient records, uploaded files, and profiles managed with top-tier security.",
   },
   {
-    icon: <Hospital className="w-8 h-8 text-[#FF6B00]" />,
+    icon: <Hospital className="w-8 h-8 text-[#CC5200]" />,
     title: "Hospital Admin Panel",
     description: "Comprehensive admin dashboard to manage total patients and facility workflow.",
   },
@@ -58,7 +58,7 @@ const Services = () => {
               are handled within a single, secure environment.
             </p>
             <Link to="/contact">
-              <button className="bg-[#FF6B00] hover:bg-[#E56000] text-white font-bold px-8 py-3.5 rounded-lg shadow-md transition-colors">
+              <button className="bg-[#CC5200] hover:bg-[#A34200] text-white font-bold px-8 py-3.5 rounded-lg shadow-md transition-colors">
                 Contact With Us
               </button>
             </Link>
@@ -75,8 +75,8 @@ const Services = () => {
                     <HeartPulse size={20} />
                   </div>
                   <div>
-                    <h5 className="font-bold text-[#1E3A8A] text-sm">24/7 Emergency</h5>
-                    <p className="text-[10px] text-slate-500">Emergency protocols always ready.</p>
+                    <h3 className="font-bold text-[#1E3A8A] text-sm">24/7 Emergency</h3>
+                    <p className="text-[10px] text-slate-600">Emergency protocols always ready.</p>
                   </div>
                 </div>
               </div>
@@ -106,11 +106,11 @@ const Services = () => {
               <div className="mb-6">
                 {feature.icon}
               </div>
-              <h4 className="text-xl font-bold text-[#1E3A8A] mb-3">{feature.title}</h4>
-              <p className="text-slate-500 text-sm leading-relaxed">
+              <h3 className="text-xl font-bold text-[#1E3A8A] mb-3">{feature.title}</h3>
+              <p className="text-slate-600 text-sm leading-relaxed">
                 {feature.description}
               </p>
-              <Link to="/register" className="mt-6 inline-flex items-center gap-2 text-blue-600 font-bold text-sm cursor-pointer hover:text-[#FF6B00] transition-colors">
+              <Link to="/register" className="mt-6 inline-flex items-center gap-2 text-blue-600 font-bold text-sm cursor-pointer hover:text-[#CC5200] transition-colors">
                 Get Started <span className="text-lg leading-none">&rarr;</span>
               </Link>
             </motion.div>

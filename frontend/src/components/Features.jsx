@@ -46,7 +46,7 @@ const Features = () => {
         >
           
           <motion.div variants={item} className="bg-white rounded-3xl p-8 shadow-[0_4px_20px_rgb(0,0,0,0.04)] border border-gray-100 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all group">
-            <div className="mb-6 text-[#FF6B00]">
+            <div className="mb-6 text-[#CC5200]">
               <Calendar size={32} strokeWidth={2} />
             </div>
             <h3 className="text-xl font-bold text-[#1E3A8A] mb-3">Smart Scheduling</h3>
@@ -98,7 +98,7 @@ const Features = () => {
           </motion.div>
 
           <motion.div variants={item} className="bg-white rounded-3xl p-8 shadow-[0_4px_20px_rgb(0,0,0,0.04)] border border-gray-100 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all group">
-            <div className="mb-6 text-[#FF6B00]">
+            <div className="mb-6 text-[#CC5200]">
               <Building2 size={32} strokeWidth={2} />
             </div>
             <h3 className="text-xl font-bold text-[#1E3A8A] mb-3">Hospital Admin Panel</h3>

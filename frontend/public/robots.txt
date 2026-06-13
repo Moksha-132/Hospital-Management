@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://hospital-management-phi-ivory.vercel.app/sitemap.xml

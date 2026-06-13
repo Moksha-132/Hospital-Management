@@ -56,10 +56,10 @@ const Navbar = () => {
           <div className="flex items-center gap-2 md:gap-4">
             {token ? (
               <>
-                <Link to={`/${role}-dashboard`} className="hidden sm:block text-blue-900 font-bold px-2 py-2 hover:text-[#FF6B00] transition-colors text-sm md:text-base whitespace-nowrap">
+                <Link to={`/${role}-dashboard`} className="hidden sm:block text-blue-900 font-bold px-2 py-2 hover:text-[#CC5200] transition-colors text-sm md:text-base whitespace-nowrap">
                   {getGreeting()}
                 </Link>
-                <Link to={`/${role}-dashboard`} className="sm:hidden text-blue-900 font-bold px-2 py-2 hover:text-[#FF6B00] transition-colors text-sm whitespace-nowrap">
+                <Link to={`/${role}-dashboard`} className="sm:hidden text-blue-900 font-bold px-2 py-2 hover:text-[#CC5200] transition-colors text-sm whitespace-nowrap">
                   Dashboard
                 </Link>
                 <button onClick={handleLogout} className="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-3 py-1.5 md:px-6 md:py-2.5 rounded-full shadow-sm transition-all transform hover:-translate-y-0.5 text-xs md:text-base whitespace-nowrap">
@@ -68,10 +68,10 @@ const Navbar = () => {
               </>
             ) : (
               <>
-                <Link to="/login" className="text-blue-900 font-bold px-2 md:px-4 py-2 hover:text-[#FF6B00] transition-colors text-sm md:text-base whitespace-nowrap">
+                <Link to="/login" className="text-blue-900 font-bold px-2 md:px-4 py-2 hover:text-[#CC5200] transition-colors text-sm md:text-base whitespace-nowrap">
                   Log In
                 </Link>
-                <Link to="/register" className="bg-[#FF6B00] hover:bg-[#E56000] text-white font-bold px-3 py-1.5 md:px-6 md:py-2.5 rounded-full shadow-lg shadow-orange-500/30 transition-all transform hover:-translate-y-0.5 text-xs md:text-base whitespace-nowrap">
+                <Link to="/register" className="bg-[#CC5200] hover:bg-[#A34200] text-white font-bold px-3 py-1.5 md:px-6 md:py-2.5 rounded-full shadow-lg shadow-orange-500/30 transition-all transform hover:-translate-y-0.5 text-xs md:text-base whitespace-nowrap">
                   <span className="hidden sm:inline">Get Started</span>
                   <span className="sm:hidden">Register</span>
                 </Link>
@@ -83,6 +83,7 @@ const Navbar = () => {
               <button
                 onClick={() => setIsOpen(!isOpen)}
                 className="text-slate-600 focus:outline-none"
+                aria-label="Toggle menu"
               >
                 {isOpen ? <X size={24} /> : <Menu size={24} />}
               </button>
